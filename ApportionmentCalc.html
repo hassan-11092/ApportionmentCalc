@@ -389,7 +389,7 @@
                     seatsColumn: 'Seats',
                     remainderColumn: 'Remainder',
                     differenceColumn: 'Diff',
-                    bppLabel: 'BPP (Quota)',
+                    bppLabel: 'Quota',
                     totalVotesLabel: 'Total Valid Votes',
                     thresholdVotesLabel: 'Threshold Votes',
                     partiesBelowThreshold: 'Parties below threshold',
@@ -442,7 +442,7 @@
                 }
             };
 
-            class ApportionmentApp {
+            class ApportionmentCalc {
                 constructor() {
                     this.elements = {};
                     document.querySelectorAll('[id]').forEach(element => {
@@ -910,7 +910,7 @@
 				return element.innerHTML;
 			};
             
-            new ApportionmentApp();
+            new ApportionmentCalc();
 		</script>
 	</body>
 </html>
