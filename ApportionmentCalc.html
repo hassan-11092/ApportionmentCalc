@@ -389,7 +389,7 @@
                     seatsColumn: 'Seats',
                     remainderColumn: 'Remainder',
                     differenceColumn: 'Diff',
-                    bppLabel: 'Quota',
+                    quotaLabel: 'Quota',
                     totalVotesLabel: 'Total Valid Votes',
                     thresholdVotesLabel: 'Threshold Votes',
                     partiesBelowThreshold: 'Parties below threshold',
@@ -429,7 +429,7 @@
                     seatsColumn: 'Kursi',
                     remainderColumn: 'Sisa',
                     differenceColumn: 'Selisih',
-                    bppLabel: 'BPP (Bilangan Pembagi Pemilih)',
+                    quotaLabel: 'BPP (Bilangan Pembagi Pemilih)',
                     totalVotesLabel: 'Total Suara Sah',
                     thresholdVotesLabel: 'Suara Ambang Batas',
                     partiesBelowThreshold: 'Partai di bawah ambang batas',
@@ -644,13 +644,13 @@
                     const passedParties = validParties.filter(p => p.votes >= thresholdVotes);
                     const failedParties = validParties.filter(p => p.votes < thresholdVotes);
 
-                    const bpp = passedParties.reduce((sum, p) => sum + p.votes, 0) / totalSeats;
+                    const quota = passedParties.reduce((sum, p) => sum + p.votes, 0) / totalSeats;
                     let hareResults = passedParties.map(p => {
-                        const fullSeats = Math.floor(p.votes / bpp);
+                        const fullSeats = Math.floor(p.votes / quota);
                         return {
                             ...p,
                             hareSeats: fullSeats,
-                            remainder: p.votes - (fullSeats * bpp)
+                            remainder: p.votes - (fullSeats * quota)
                         };
                     });
 
@@ -714,7 +714,7 @@
                         thresholdVotes,
                         thresholdPercent,
                         totalSeats,
-                        bpp,
+                        quota,
                         finalResults,
                         slSteps: steps
                     };
@@ -726,12 +726,12 @@
                 renderResults() {
                     if (!this.state.results) return;
 
-                    const { finalResults, totalVotes, thresholdVotes, thresholdPercent, bpp } = this.state.results;
+                    const { finalResults, totalVotes, thresholdVotes, thresholdPercent, quota } = this.state.results;
                     const passed = finalResults.filter(r => r.passedThreshold);
                     const failed = finalResults.filter(r => !r.passedThreshold);
 
                     let hareHtml = `
-                        <p class="info-text">${this.translate('bppLabel')}: ${bpp.toLocaleString(undefined, {maximumFractionDigits: 2})}</p>
+                        <p class="info-text">${this.translate('quotaLabel')}: ${quota.toLocaleString(undefined, {maximumFractionDigits: 2})}</p>
                         <p class="info-text">${this.translate('totalVotesLabel')}: ${totalVotes.toLocaleString()}</p>
                         <p class="info-text">${this.translate('thresholdVotesLabel')} (${thresholdPercent}%): ${thresholdVotes.toLocaleString(undefined, {maximumFractionDigits: 0})}</p>
                         <table>

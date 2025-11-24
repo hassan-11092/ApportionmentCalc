@@ -12,7 +12,7 @@ The interface supports both **English** and **Bahasa Indonesia**.
 The calculator takes vote counts for multiple political parties and a total number of seats to allocate, then:
 
 1. **Electoral Threshold**: Filters out parties that do not meet the minimum vote percentage requirement (if configured).
-2. **Hare Quota Method**: Calculates the BPP (Electoral Quota), allocates seats based on full quotas, then distributes remaining seats to parties with the largest remainders.
+2. **Hare Quota Method**: Calculates the Electoral Quota, allocates seats based on full quotas, then distributes remaining seats to parties with the largest remainders.
 3. **Sainte Laguë Method**: Uses a divisor sequence (1, 3, 5, 7, 9...) to iteratively allocate seats based on the highest quotient at each step.
 4. **Comparison View**: Shows side-by-side results and highlights differences between the two methods.
 
@@ -45,8 +45,8 @@ The calculator takes vote counts for multiple political parties and a total numb
 
 ## Understanding the Methods
 
-### Hare Quota (Kuota Hare)
-- Calculates a quota: Total Valid Votes ÷ Total Seats = BPP
+### Hare Quota
+- Calculates a quota: Total Valid Votes ÷ Total Seats = Quota
 - Each party gets one seat for each full quota
 - Remaining seats go to parties with the largest remainders
 - Tends to favor smaller parties
