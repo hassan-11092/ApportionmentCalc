@@ -89,6 +89,6 @@ Contributions, issues, and suggestions are welcome. Please open an issue to disc
 
 ## Further Reading
 - [Proportional Representation on Wikipedia](https://en.wikipedia.org/wiki/Proportional_representation)
-- [Sainte-Laguë method](https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method)
+- [Sainte-Laguë method](https://en.wikipedia.org/wiki/Sainte-Lagu%C3%AB_method)
 - [Hare Quota](https://en.wikipedia.org/wiki/Hare_quota)
 - [Indonesia's Electoral System (KPU)](https://www.kpu.go.id/)
