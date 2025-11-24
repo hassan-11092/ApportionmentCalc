@@ -1,0 +1,2 @@
+# ApportionmentCalc
+Electoral math, simplified.
