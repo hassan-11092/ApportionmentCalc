@@ -1,7 +1,7 @@
+**English** | [Bahasa Indonesia](README-id.md)
+
 # ApportionmentCalc
 Electoral math, simplified.
-
-[**Bahasa Indonesia README**](README-id.md)
 
 ## Introduction
 ApportionmentCalc is a single-file, browser-based calculator for comparing two popular electoral seat allocation methods: **Sainte Laguë** and **Hare Quota**. Designed for students, researchers, election observers, and anyone curious about proportional representation, this tool visualizes how different methods can produce different outcomes from the same vote counts.
