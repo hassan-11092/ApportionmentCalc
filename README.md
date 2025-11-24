@@ -31,7 +31,7 @@ The calculator takes vote counts for multiple political parties and a total numb
 - **Electoral Threshold**: Configurable percentage to filter parties.
 - **Dual-method comparison**: See Hare Quota and Sainte Laguë results side-by-side.
 - **Dynamic party input**: Add or remove as many parties as needed.
-- **Detailed breakdown**: View BPP, remainders, quotients, and detailed allocation steps.
+- **Detailed breakdown**: View Quota, remainders, quotients, and detailed allocation steps.
 - **Visualizations**: Step-by-step table showing how each seat is awarded in the Sainte-Laguë method.
 - **CSV Export**: Download results for further analysis.
 - **Single HTML file**: No installation, no dependencies, works completely offline.

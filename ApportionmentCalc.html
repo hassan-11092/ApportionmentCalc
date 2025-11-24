@@ -150,7 +150,7 @@
                 gap: 1rem;
                 margin-bottom: 1rem;
             }
-            
+
             .form-group {
                 flex: 1;
                 margin-bottom: 1rem;
@@ -326,7 +326,7 @@
                 </div>
 
                 <div class="party-list" id="partyList"></div>
-                
+
                 <button id="addPartyButton" class="button-secondary" style="margin-bottom: 1rem;"></button>
 				<button id="calculateButton" class="button-primary"></button>
 			</div>
@@ -478,7 +478,7 @@
                 translate(key) {
                     return languageStrings[this.state.language][key] || key;
                 }
-                
+
                 formatString(key, replacements) {
                     let text = this.translate(key);
                     if (replacements) {
@@ -643,6 +643,11 @@
 
                     const passedParties = validParties.filter(p => p.votes >= thresholdVotes);
                     const failedParties = validParties.filter(p => p.votes < thresholdVotes);
+
+                    if (passedParties.length === 0) {
+                        alert(this.translate('partiesBelowThreshold')); // Or a more specific message if available
+                        return;
+                    }
 
                     const quota = passedParties.reduce((sum, p) => sum + p.votes, 0) / totalSeats;
                     let hareResults = passedParties.map(p => {

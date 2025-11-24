@@ -12,14 +12,14 @@ def calculate_hare(party_votes, total_seats):
     if total_votes == 0:
         return [0] * len(party_votes)
 
-    bpp = total_votes / total_seats
+    quota = total_votes / total_seats
 
     seats = []
     remainders = []
 
     for i, votes in enumerate(party_votes):
-        allocated = math.floor(votes / bpp)
-        rem = votes - (allocated * bpp)
+        allocated = math.floor(votes / quota)
+        rem = votes - (allocated * quota)
         seats.append(allocated)
         remainders.append((rem, i))
 
