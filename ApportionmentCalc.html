@@ -699,6 +699,7 @@
 							const quotient = party.votes / divisor;
 
 							roundQuotients.push({
+								id: party.id,
 								name: party.name,
 								quotient: quotient,
 								divisor: divisor
@@ -716,6 +717,7 @@
 							steps.push({
 								round: i,
 								winner: sainteLagueResults[winnerIndex].name,
+								winnerId: sainteLagueResults[winnerIndex].id,
 								winningQuotient: maxQuotient,
 								quotients: roundQuotients
 							});
@@ -888,7 +890,7 @@
 							<td>${step.winningQuotient.toLocaleString(undefined, {
 							maximumFractionDigits: 2
 						})}</td>
-							<td>${step.quotients.find(quotient=>quotient.name === step.winner).divisor}</td>
+							<td>${step.quotients.find(quotient=>quotient.id === step.winnerId).divisor}</td>
 						</tr>
 					`;
 					}
@@ -908,7 +910,7 @@
 							</tr>
 							<tr>
 								${step.quotients.map(quotient=>{
-							const isWinner = quotient.name === step.winner;
+							const isWinner = quotient.id === step.winnerId;
 							return `<td class="${isWinner ? 'viz-row-highlight' : ''}" style="${isWinner ? 'font-weight:bold' : ''}">${quotient.quotient.toLocaleString(undefined, {
 								maximumFractionDigits: 2
 							})}</td>`;
