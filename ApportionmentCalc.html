@@ -261,11 +261,13 @@
 				position: relative;
 			}
 
-			#closeVizButton {
+			#closeViz {
 				position: absolute;
 				top: 1rem;
 				right: 1rem;
 				width: auto;
+				font-size: 1.5rem;
+				padding: 0.25rem 0.75rem;
 			}
 
 			.action-buttons {
@@ -458,23 +460,23 @@
 					this.el = Object.fromEntries([...document.querySelectorAll('[id]')].map(e=>[e.id, e]));
 					this.parties = [{
 						id: 1,
-						name: 'Partai A',
+						name: 'Apple Party',
 						votes: 25000
 					}, {
 						id: 2,
-						name: 'Partai B',
+						name: 'Banana Party',
 						votes: 15000
 					}, {
 						id: 3,
-						name: 'Partai C',
+						name: 'Cherry Party',
 						votes: 9000
 					}, {
 						id: 4,
-						name: 'Partai D',
+						name: 'Date Party',
 						votes: 5000
 					}, {
 						id: 5,
-						name: 'Partai E',
+						name: 'Elderberry Party',
 						votes: 1500
 					}];
 					this.nextId = 6;
