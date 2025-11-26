@@ -55,7 +55,7 @@ The calculator takes vote counts for multiple political parties and a total numb
 - Uses odd-number divisors: 1, 3, 5, 7, 9...
 - Seats allocated one-by-one to the party with the highest quotient
 - Formula: Votes ÷ (2 × Current Seats + 1)
-- Generally considered more proportional for mid-sized parties
+- Tends to favor larger parties
 
 ## Privacy & Data
 All calculations happen locally in your browser. No data is sent to any server. The tool is completely offline once loaded.
