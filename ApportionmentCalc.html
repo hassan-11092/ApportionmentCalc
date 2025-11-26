@@ -627,7 +627,7 @@
 						remainder: p.votes % quota
 					}));
 					let allocated = hare.reduce((s,p)=>s + p.hareSeats, 0);
-					hare.sort((a,b)=>b.remainder - a.remainder);
+					hare.sort((a,b)=>b.remainder - a.remainder || b.votes - a.votes);
 					for (let i = 0; i < totalSeats - allocated; i++)
 						if (hare[i])
 							hare[i].hareSeats++;
