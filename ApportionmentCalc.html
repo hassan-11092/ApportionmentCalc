@@ -600,7 +600,12 @@
 							placeholder: this.t('votesPlaceholder'),
 							value: party.votes || '',
 							min: '0',
-							onchange: e=>party.votes = parseInt(e.target.value) || 0
+							onchange: e=>{
+								const floatVal = this.parseLocalFloat(e.target.value);
+								const roundedVal = Math.round(floatVal);
+								party.votes = roundedVal || 0;
+								e.target.value = party.votes || '';
+							}
 						});
 						const remove = Object.assign(document.createElement('button'), {
 							className: 'danger',

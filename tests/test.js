@@ -74,4 +74,32 @@ describe('ApportionmentCalc', function () {
     expect(parseInt(partyB.seats, 10)).to.equal(0);
     expect(parseInt(partyC.seats, 10)).to.equal(0);
   });
+
+  it('should round decimal votes to the nearest integer', async () => {
+    // Helper to clear and type in an input
+    const clearAndType = async (selector, value) => {
+      const element = await page.$(selector);
+      await element.click({ clickCount: 3 });
+      await element.press('Backspace');
+      await element.type(value);
+    };
+
+    // Use existing party row, just change the votes
+    await page.click('#edit'); // Go back to the input screen
+    await page.waitForSelector('#input:not(.hidden)');
+
+    // Change the votes of the first party to a decimal number
+    await clearAndType('.party-row:nth-child(1) input[type="number"]', '7000.6');
+
+    // Trigger the onchange event by focusing and then blurring the input
+    await page.focus('.party-row:nth-child(1) input[type="number"]');
+    await page.keyboard.press('Tab'); // Blur the input
+
+    // Check if the input value has been rounded
+    const roundedVotes = await page.evaluate(() => {
+      return document.querySelector('.party-row:nth-child(1) input[type="number"]').value;
+    });
+
+    expect(roundedVotes).to.equal('7001');
+  });
 });
