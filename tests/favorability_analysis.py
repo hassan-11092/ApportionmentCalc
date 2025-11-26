@@ -69,27 +69,36 @@ def calculate_sainte_lague(party_votes, total_seats):
 def run_simulation():
     # Simulation Parameters
     party_counts = range(3, 16) # 3 to 15 parties
-    seat_counts = [10, 20, 50, 100, 560] # Various parliament sizes
-    thresholds = [0, 4] # 0% and 4%
-    vote_distributions = ['uniform', 'exponential']
+    seat_counts = [10, 50, 100, 250, 560] # Various parliament sizes
+    thresholds = [0, 3, 4, 5] # 0%, 3%, 4%, and 5%
+    vote_distributions = ['uniform', 'exponential', 'power-law']
 
-    simulations_per_config = 100
+    simulations_per_config = 500
 
     total_scenarios = 0
-    hare_favors_small_count = 0
-    sl_favors_small_count = 0
-    neutral_count = 0
+    # Analysis buckets
+    favorability_counts = {
+        'small': {'hare': 0, 'sl': 0, 'neutral': 0},
+        'medium': {'hare': 0, 'sl': 0, 'neutral': 0},
+        'large': {'hare': 0, 'sl': 0, 'neutral': 0}
+    }
+    total_scenarios = 0
 
-    print(f"{'Parties':<8} | {'Seats':<6} | {'Thresh%':<7} | {'Dist':<11} | {'Hare Small':<10} | {'SL Small':<10} | {'Diff (H-S)':<10}")
-    print("-" * 85)
+    header = f"{'Parties':<8} | {'Seats':<6} | {'Thresh%':<7} | {'Dist':<11} | {'Category':<9} | {'Hare Seats':<10} | {'SL Seats':<10} | {'Diff':<10}"
+    print(header)
+    print("-" * len(header))
 
     for num_parties in party_counts:
         for num_seats in seat_counts:
             for threshold_pct in thresholds:
                 for dist_type in vote_distributions:
 
-                    local_hare_small_seats = 0
-                    local_sl_small_seats = 0
+                    # Accumulators for this specific configuration
+                    totals = {
+                        'small': {'hare': 0, 'sl': 0},
+                        'medium': {'hare': 0, 'sl': 0},
+                        'large': {'hare': 0, 'sl': 0}
+                    }
 
                     for _ in range(simulations_per_config):
                         # 1. Generate Votes
@@ -97,19 +106,17 @@ def run_simulation():
                         if dist_type == 'uniform':
                             votes = [random.randint(1000, 100000) for _ in range(num_parties)]
                         elif dist_type == 'exponential':
-                            # Generates some large parties and many small ones
                             votes = [int(random.expovariate(1/10000)) + 100 for _ in range(num_parties)]
+                        elif dist_type == 'power-law':
+                            votes = [int(random.paretovariate(1.2)) * 1000 for _ in range(num_parties)]
 
                         total_vote_count = sum(votes)
 
                         # 2. Apply Threshold
                         threshold_votes = total_vote_count * (threshold_pct / 100.0)
-
-                        # Identify passed parties
                         passed_indices = [i for i, v in enumerate(votes) if v >= threshold_votes]
 
-                        if not passed_indices:
-                            continue # No one passed, skip
+                        if len(passed_indices) < 2: continue # Need at least 2 parties to compare
 
                         passed_votes = [votes[i] for i in passed_indices]
 
@@ -117,49 +124,78 @@ def run_simulation():
                         hare_results_passed = calculate_hare(passed_votes, num_seats)
                         sl_results_passed = calculate_sainte_lague(passed_votes, num_seats)
 
-                        # Map back to original indices
                         hare_seats_full = [0] * num_parties
                         sl_seats_full = [0] * num_parties
-
                         for idx, passed_idx in enumerate(passed_indices):
                             hare_seats_full[passed_idx] = hare_results_passed[idx]
                             sl_seats_full[passed_idx] = sl_results_passed[idx]
 
                         # 4. Analyze Favorability
-                        # Define "Small Parties": Bottom 50% by vote count
                         sorted_indices = sorted(range(num_parties), key=lambda k: votes[k])
-                        small_party_indices = sorted_indices[:num_parties // 2]
 
-                        hare_small_total = sum(hare_seats_full[i] for i in small_party_indices)
-                        sl_small_total = sum(sl_seats_full[i] for i in small_party_indices)
+                        third = num_parties // 3
+                        small_indices = sorted_indices[:third]
+                        medium_indices = sorted_indices[third:2*third]
+                        large_indices = sorted_indices[2*third:]
 
-                        local_hare_small_seats += hare_small_total
-                        local_sl_small_seats += sl_small_total
+                        party_categories = {
+                            "small": small_indices,
+                            "medium": medium_indices,
+                            "large": large_indices
+                        }
 
-                        if hare_small_total > sl_small_total:
-                            hare_favors_small_count += 1
-                        elif sl_small_total > hare_small_total:
-                            sl_favors_small_count += 1
-                        else:
-                            neutral_count += 1
+                        for category, indices in party_categories.items():
+                            if not indices: continue
+
+                            hare_total = sum(hare_seats_full[i] for i in indices)
+                            sl_total = sum(sl_seats_full[i] for i in indices)
+
+                            totals[category]['hare'] += hare_total
+                            totals[category]['sl'] += sl_total
+
+                            if hare_total > sl_total:
+                                favorability_counts[category]['hare'] += 1
+                            elif sl_total > hare_total:
+                                favorability_counts[category]['sl'] += 1
+                            else:
+                                favorability_counts[category]['neutral'] += 1
 
                         total_scenarios += 1
 
                     # Print stats for this config
-                    diff = local_hare_small_seats - local_sl_small_seats
-                    print(f"{num_parties:<8} | {num_seats:<6} | {threshold_pct:<7} | {dist_type:<11} | {local_hare_small_seats:<10} | {local_sl_small_seats:<10} | {diff:<10}")
+                    for category in ['small', 'medium', 'large']:
+                        h_seats = totals[category]['hare']
+                        s_seats = totals[category]['sl']
+                        diff = h_seats - s_seats
+                        print(f"{num_parties:<8} | {num_seats:<6} | {threshold_pct:<7} | {dist_type:<11} | {category:<9} | {h_seats:<10} | {s_seats:<10} | {diff:<10}")
 
-    print("-" * 85)
+    print("-" * len(header))
     print("Summary:")
-    print(f"Total Scenarios: {total_scenarios}")
-    print(f"Hare favored small parties: {hare_favors_small_count} times ({(hare_favors_small_count/total_scenarios)*100:.2f}%)")
-    print(f"SL favored small parties:   {sl_favors_small_count} times ({(sl_favors_small_count/total_scenarios)*100:.2f}%)")
-    print(f"Same result:                {neutral_count} times ({(neutral_count/total_scenarios)*100:.2f}%)")
+    print(f"Total valid scenarios analyzed: {total_scenarios}")
 
-    if hare_favors_small_count > sl_favors_small_count:
-        print("\nCONCLUSION: The data SUPPORTS the claim that Hare Quota tends to favor smaller parties compared to Sainte-Laguë.")
+    for category in ['small', 'medium', 'large']:
+        cat_total = sum(favorability_counts[category].values())
+        if cat_total == 0: continue
+
+        hare_perc = (favorability_counts[category]['hare'] / cat_total) * 100
+        sl_perc = (favorability_counts[category]['sl'] / cat_total) * 100
+        neutral_perc = (favorability_counts[category]['neutral'] / cat_total) * 100
+
+        print(f"\n--- {category.capitalize()} Parties ---")
+        print(f"Hare Quota favored: {favorability_counts[category]['hare']} times ({hare_perc:.2f}%)")
+        print(f"Sainte-Laguë favored: {favorability_counts[category]['sl']} times ({sl_perc:.2f}%)")
+        print(f"Neutral outcome:    {favorability_counts[category]['neutral']} times ({neutral_perc:.2f}%)")
+
+    print("\nCONCLUSION:")
+    if favorability_counts['small']['hare'] > favorability_counts['small']['sl']:
+        print("- The data SUPPORTS the claim that Hare Quota tends to favor SMALLER parties.")
     else:
-        print("\nCONCLUSION: The data DOES NOT support the claim.")
+        print("- The data DOES NOT support the claim that Hare Quota favors smaller parties.")
+
+    if favorability_counts['large']['sl'] > favorability_counts['large']['hare']:
+         print("- The data SUPPORTS the claim that Sainte-Laguë tends to favor LARGER parties.")
+    else:
+        print("- The data DOES NOT support the claim that Sainte-Laguë favors larger parties.")
 
 if __name__ == "__main__":
     run_simulation()
