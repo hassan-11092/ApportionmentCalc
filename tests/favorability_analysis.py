@@ -1,18 +1,18 @@
 import random
 import math
 
-def calculate_hare(party_votes, total_seats):
+def calculate_hare(party_votes, total_valid_votes, total_seats):
     """
     Calculates seat allocation using Hare Quota (Largest Remainder).
     party_votes: list of integers (votes per party)
+    total_valid_votes: integer (sum of all valid votes, including eliminated ones if any)
     total_seats: integer
     Returns: list of integers (seats per party, corresponding to input order)
     """
-    total_votes = sum(party_votes)
-    if total_votes == 0:
+    if total_valid_votes == 0:
         return [0] * len(party_votes)
 
-    quota = total_votes / total_seats
+    quota = total_valid_votes / total_seats
 
     seats = []
     remainders = []
@@ -24,14 +24,22 @@ def calculate_hare(party_votes, total_seats):
         remainders.append((rem, i))
 
     allocated_seats = sum(seats)
+
+    # It is possible that allocated_seats < total_seats (likely)
+    # It is also possible (though rarer with standard Hare) that allocated_seats > total_seats if we used a weird quota,
+    # but here quota = Total / Seats, so sum(votes) / quota = Seats.
+    # sum(floor(votes/quota)) <= sum(votes/quota) = Seats.
+    # So we usually have remaining seats.
+
     remaining_seats = total_seats - allocated_seats
 
     # Sort by remainder descending
     remainders.sort(key=lambda x: x[0], reverse=True)
 
     for i in range(remaining_seats):
-        idx = remainders[i][1]
-        seats[idx] += 1
+        if i < len(remainders):
+            idx = remainders[i][1]
+            seats[idx] += 1
 
     return seats
 
@@ -43,10 +51,6 @@ def calculate_sainte_lague(party_votes, total_seats):
     Returns: list of integers
     """
     seats = [0] * len(party_votes)
-
-    # We simulate the iterative process to handle ties and exact logic
-    # though for stats, strict tie-breaking might not matter much,
-    # we'll use a simple max finding loop.
 
     for _ in range(total_seats):
         max_quotient = -1
@@ -121,7 +125,9 @@ def run_simulation():
                         passed_votes = [votes[i] for i in passed_indices]
 
                         # 3. Calculate Allocations
-                        hare_results_passed = calculate_hare(passed_votes, num_seats)
+                        # Corrected Hare Logic: Pass total_vote_count as the basis for quota
+                        hare_results_passed = calculate_hare(passed_votes, total_vote_count, num_seats)
+
                         sl_results_passed = calculate_sainte_lague(passed_votes, num_seats)
 
                         hare_seats_full = [0] * num_parties
