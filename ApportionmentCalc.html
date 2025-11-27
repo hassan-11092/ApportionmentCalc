@@ -754,10 +754,10 @@
 						return;
 					const {results} = this.data;
 					const total = results.reduce((sum,party)=>sum + party.votes, 0);
-					const csv = 'Party,Votes,Share (%),Passed Threshold?,Hare Seats,Sainte-Laguë Seats,Difference\n' + results.map(r=>`"${r.name.replace(/"/g, '""')}",${r.votes},${this.format(r.votes / total * 100, {
+					const csv = 'Party,Votes,Share (%),Passed Threshold?,Hare Seats,Sainte-Laguë Seats,Difference\n' + results.map(r=>`"${r.name.replace(/"/g, '""')}",${r.votes},"${this.format(r.votes / total * 100, {
 						minimumFractionDigits: 2,
 						maximumFractionDigits: 2
-					})},${r.passed ? 'Yes' : 'No'},${r.hareSeats},${r.slSeats},${r.slSeats - r.hareSeats}`).join('\n');
+					})}",${r.passed ? 'Yes' : 'No'},${r.hareSeats},${r.slSeats},${r.slSeats - r.hareSeats}`).join('\n');
 					Object.assign(document.createElement('a'), {
 						href: URL.createObjectURL(new Blob([csv],{
 							type: 'text/csv'
