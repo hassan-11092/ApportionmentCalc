@@ -14,16 +14,16 @@
 				--border: #c1c6d7;
 				--hover: #d7d9e5;
 				--success: #28a745;
-				--danger: #dc3545;
+				--danger: #dc3545
 			}
 
-			@media (prefers-color-scheme: dark) {
+			@media(prefers-color-scheme: dark) {
 				:root:not(.light) {
-					--background: #10131b;
+					--background:#10131b;
 					--surface: #181c23;
 					--text: #c1c6d7;
 					--border: #414754;
-					--hover: #10131b;
+					--hover: #10131b
 				}
 			}
 
@@ -32,13 +32,13 @@
 				--surface: #181c23;
 				--text: #c1c6d7;
 				--border: #414754;
-				--hover: #10131b;
+				--hover: #10131b
 			}
 
 			* {
 				box-sizing: border-box;
 				margin: 0;
-				padding: 0;
+				padding: 0
 			}
 
 			body {
@@ -49,7 +49,7 @@
 				align-items: flex-start;
 				justify-content: center;
 				min-height: 100vh;
-				padding: 1rem;
+				padding: 1rem
 			}
 
 			.container {
@@ -60,70 +60,66 @@
 				padding: 2rem;
 				width: 100%;
 				position: relative;
-				margin-top: 2rem;
+				margin-top: 2rem
 			}
 
 			.hidden {
-				display: none !important;
+				display: none!important
 			}
 
-			h1, h2, h3 {
-				margin: 0.5rem 0;
+			h1,h2,h3 {
+				margin: .5rem 0
 			}
 
 			label {
 				display: block;
 				font-weight: 700;
-				margin-bottom: 0.5rem;
+				margin-bottom: .5rem
 			}
 
-			input, select, textarea, button {
+			input,select,textarea,button {
 				background: var(--surface);
 				border: 1px solid var(--border);
 				border-radius: 4px;
 				color: var(--text);
 				font-size: 1rem;
-				padding: 0.5rem;
-				width: 100%;
+				padding: .5rem;
+				width: 100%
 			}
 
 			button {
 				cursor: pointer;
-				transition: background 0.2s;
+				transition: background .2s
 			}
 
 			.primary {
 				background: var(--primary);
 				border: none;
-				color: #fff;
+				color: #fff
 			}
 
 			.primary:hover {
-				background: var(--primary-hover);
+				background: var(--primary-hover)
 			}
 
 			.secondary:hover {
-				background: var(--hover);
+				background: var(--hover)
 			}
 
 			.danger {
 				background: var(--danger);
 				color: #fff;
-				border: none;
+				border: none
 			}
 
-			.danger:hover {
-				filter: brightness(0.9);
+			.danger:hover,.success:hover {
+				filter: brightness(.9)
 			}
 
 			.success {
 				background: var(--success);
 				color: #fff;
-				border: none;
-			}
-
-			.success:hover {
-				filter: brightness(0.9);
+				border: none
 			}
 
 			.selectors {
@@ -131,94 +127,94 @@
 				right: 2rem;
 				top: 1rem;
 				display: flex;
-				gap: 8px;
+				gap: 8px
 			}
 
 			.selectors select {
-				font-size: 0.9rem;
+				font-size: .9rem;
 				padding: 5px;
-				width: auto;
+				width: auto
 			}
 
 			.row {
 				display: flex;
 				gap: 1rem;
-				margin-bottom: 1rem;
+				margin-bottom: 1rem
 			}
 
 			.group {
 				flex: 1;
-				margin-bottom: 1rem;
+				margin-bottom: 1rem
 			}
 
 			.party-list {
-				margin-bottom: 1rem;
+				margin-bottom: 1rem
 			}
 
 			.party-row {
 				display: flex;
-				gap: 0.5rem;
-				margin-bottom: 0.5rem;
-				align-items: center;
+				gap: .5rem;
+				margin-bottom: .5rem;
+				align-items: center
 			}
 
 			.party-row input[type="text"] {
-				flex: 2;
+				flex: 2
 			}
 
 			.party-row input[type="number"] {
-				flex: 1;
+				flex: 1
 			}
 
 			.party-row button {
 				width: auto;
-				padding: 0.5rem 1rem;
+				padding: .5rem 1rem
 			}
 
 			.results-grid {
 				display: grid;
 				grid-template-columns: 1fr 1fr;
 				gap: 1rem;
-				margin-top: 1rem;
+				margin-top: 1rem
 			}
 
 			table {
 				border-collapse: collapse;
 				margin-top: 1rem;
 				width: 100%;
-				font-size: 0.9rem;
+				font-size: .9rem
 			}
 
-			th, td {
+			th,td {
 				border: 1px solid var(--border);
-				padding: 0.5rem;
-				text-align: left;
+				padding: .5rem;
+				text-align: left
 			}
 
 			th {
 				background: var(--primary);
-				color: #fff;
+				color: #fff
 			}
 
 			.comparison-section {
 				margin-top: 2rem;
 				padding-top: 1rem;
-				border-top: 1px solid var(--border);
+				border-top: 1px solid var(--border)
 			}
 
 			.diff-positive {
 				color: var(--success);
-				font-weight: bold;
+				font-weight: 700
 			}
 
 			.diff-negative {
 				color: var(--danger);
-				font-weight: bold;
+				font-weight: 700
 			}
 
 			.diff-neutral {
 				color: var(--text);
-				opacity: 0.5;
+				opacity: .5
 			}
 
 			.viz-step {
@@ -226,15 +222,11 @@
 				border: 1px solid var(--border);
 				margin-bottom: 1rem;
 				padding: 1rem;
-				border-radius: 4px;
-			}
-
-			.viz-step h4 {
-				margin-top: 0;
+				border-radius: 4px
 			}
 
 			.viz-row-highlight {
-				background-color: rgba(0, 112, 234, 0.1);
+				background-color: rgba(0,112,234,.1)
 			}
 
 			#vizModal {
@@ -243,11 +235,11 @@
 				left: 0;
 				width: 100%;
 				height: 100%;
-				background: rgba(0,0,0,0.5);
+				background: rgba(0,0,0,.5);
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				z-index: 1000;
+				z-index: 1000
 			}
 
 			#vizContent {
@@ -258,7 +250,7 @@
 				max-height: 90%;
 				overflow-y: auto;
 				width: 800px;
-				position: relative;
+				position: relative
 			}
 
 			#closeViz {
@@ -267,45 +259,45 @@
 				right: 1rem;
 				width: auto;
 				font-size: 1.5rem;
-				padding: 0.25rem 0.75rem;
+				padding: .25rem .75rem
 			}
 
 			.action-buttons {
 				display: flex;
 				gap: 1rem;
 				margin-top: 1rem;
-				flex-wrap: wrap;
+				flex-wrap: wrap
 			}
 
 			.action-buttons button {
-				flex: 1;
+				flex: 1
 			}
 
 			.info-text {
-				font-size: 0.9rem;
-				opacity: 0.8;
-				margin-bottom: 0.5rem;
+				font-size: .9rem;
+				opacity: .8;
+				margin-bottom: .5rem
 			}
 
-			@media (max-width: 768px) {
+			@media(max-width: 768px) {
 				.results-grid {
-					grid-template-columns: 1fr;
+					grid-template-columns:1fr
 				}
 
 				.selectors {
 					position: static;
 					justify-content: flex-end;
-					margin-bottom: 0.5rem;
-					gap: 4px;
+					margin-bottom: .5rem;
+					gap: 4px
 				}
 
 				.row {
 					flex-direction: column;
-					gap: 0;
+					gap: 0
 				}
 
 				.spacer {
-					display: none;
+					display: none
 				}
 			}
 		</style>
@@ -324,7 +316,7 @@
 				</select>
 			</div>
 			<h1 id="title"></h1>
-			<p id="subtitle" style="margin-bottom: 1.5rem; opacity: 0.8;"></p>
+			<p id="subtitle" style="margin-bottom:1.5rem;opacity:.8"></p>
 			<div id="input">
 				<div class="row">
 					<div class="group">
@@ -337,7 +329,7 @@
 					</div>
 				</div>
 				<div class="party-list" id="partyList"></div>
-				<button id="addParty" class="secondary" style="margin-bottom: 1rem;"></button>
+				<button id="addParty" class="secondary" style="margin-bottom:1rem"></button>
 				<button id="calculate" class="primary"></button>
 			</div>
 			<div id="results" class="hidden">
@@ -370,7 +362,7 @@
 			</div>
 		</div>
 		<script>
-			const strings = {
+			const text = {
 				en: {
 					title: 'ApportionmentCalc',
 					subtitle: 'Electoral seat allocation calculator: Sainte Laguë vs Hare Quota',
@@ -408,7 +400,7 @@
 					seatAllocated: 'Seat #{n}',
 					divisorsText: 'Divisors: 1, 3, 5, 7...',
 					quotientDetail: 'Quotient Detail',
-					winnerPrefix: 'Winner: ',
+					winnerPrefix: 'Winner: '
 				},
 				id: {
 					title: 'ApportionmentCalc',
@@ -447,17 +439,17 @@
 					seatAllocated: 'Kursi ke-{n}',
 					divisorsText: 'Pembagi: 1, 3, 5, 7...',
 					quotientDetail: 'Rincian Bilangan',
-					winnerPrefix: 'Pemenang: ',
+					winnerPrefix: 'Pemenang: '
 				}
 			};
 
-			const escape = text=>Object.assign(document.createElement('p'), {
-				textContent: text
+			const escape = value=>Object.assign(document.createElement('p'), {
+				textContent: value
 			}).innerHTML;
 
 			class ApportionmentCalc {
 				constructor() {
-					this.el = Object.fromEntries([...document.querySelectorAll('[id]')].map(e=>[e.id, e]));
+					this.dom = Object.fromEntries([...document.querySelectorAll('[id]')].map(node=>[node.id, node]));
 					this.parties = [{
 						id: 1,
 						name: 'Apple Party',
@@ -481,91 +473,90 @@
 					}];
 					this.nextId = 6;
 					this.data = null;
-					this.lang = navigator.language?.startsWith('id') ? 'id' : 'en';
+					this.language = navigator.language?.startsWith('id') ? 'id' : 'en';
 					this.init();
-				}
-
-				parseLocalFloat(s) {
-					if (typeof s !== 'string') return s;
-					return parseFloat(s.replace(',', '.'));
 				}
 
 				init() {
 					this.bind();
 					this.renderParties();
 					this.setTheme('auto');
-					this.setLanguage(this.lang);
+					this.setLanguage(this.language);
 				}
 
 				bind() {
-					const {el} = this;
-					el.addParty.onclick = ()=>this.addParty();
-					el.calculate.onclick = ()=>this.calculate();
-					el.edit.onclick = ()=>this.show('input');
-					el.showViz.onclick = ()=>this.toggleViz(true);
-					el.closeViz.onclick = ()=>this.toggleViz(false);
-					el.vizModal.onclick = e=>e.target === el.vizModal && this.toggleViz(false);
-					el.export.onclick = ()=>this.exportCsv();
-					el.language.onchange = e=>this.setLanguage(e.target.value);
-					el.theme.onchange = e=>this.setTheme(e.target.value);
+					const {dom} = this;
+					dom.addParty.onclick = ()=>this.addParty();
+					dom.calculate.onclick = ()=>this.calculate();
+					dom.edit.onclick = ()=>this.show('input');
+					dom.showViz.onclick = ()=>this.toggleViz(true);
+					dom.closeViz.onclick = ()=>this.toggleViz(false);
+					dom.vizModal.onclick = event=>event.target === dom.vizModal && this.toggleViz(false);
+					dom.export.onclick = ()=>this.exportCsv();
+					dom.language.onchange = event=>this.setLanguage(event.target.value);
+					dom.theme.onchange = event=>this.setTheme(event.target.value);
 				}
 
-				t(key) {
-					return strings[this.lang][key] || key;
+				string(key) {
+					return text[this.language][key] || key;
 				}
 
-				fmt(n, options={}) {
-					return n.toLocaleString(this.lang === 'id' ? 'id-ID' : 'en-US', options);
+				format(value, options={}) {
+					return value.toLocaleString(this.language === 'id' ? 'id-ID' : 'en-US', options);
 				}
 
-				fmtStr(key, values) {
-					let text = this.t(key);
+				template(key, values) {
+					let result = this.string(key);
 					for (const [k,v] of Object.entries(values || {}))
-						text = text.replace(`{${k}}`, v);
-					return text;
+						result = result.replace(`{${k}}`, v);
+					return result;
+				}
+
+				parseFloat(value) {
+					return typeof value === 'string' ? parseFloat(value.replace(',', '.')) : value;
 				}
 
 				setTheme(theme) {
 					document.documentElement.classList.remove('light', 'dark');
 					if (theme !== 'auto')
 						document.documentElement.classList.add(theme);
-					this.el.theme.value = theme;
+					this.dom.theme.value = theme;
 				}
 
-				setLanguage(lang) {
-					this.lang = lang;
-					this.el.language.value = lang;
-					document.documentElement.lang = lang;
-					const {el} = this;
-					const s = strings[lang];
-					el.title.textContent = s.title;
-					el.subtitle.textContent = s.subtitle;
-					el.theme.options[0].textContent = s.autoTheme;
-					el.theme.options[1].textContent = s.lightTheme;
-					el.theme.options[2].textContent = s.darkTheme;
-					el.seatsLabel.textContent = s.seatsLabel;
-					el.thresholdLabel.textContent = s.thresholdLabel;
-					el.addParty.textContent = s.addParty;
-					el.calculate.textContent = s.calculate;
-					el.edit.textContent = s.edit;
-					el.showViz.textContent = s.showViz;
-					el.export.textContent = s.export;
-					el.hareTitle.textContent = s.hareTitle;
-					el.sainteLagueTitle.textContent = s.sainteLagueTitle;
-					el.comparisonTitle.textContent = s.comparisonTitle;
-					el.vizTitle.textContent = s.vizTitle;
+				setLanguage(language) {
+					this.language = language;
+					this.dom.language.value = language;
+					document.documentElement.lang = language;
+					const {dom} = this
+					  , source = text[language];
+					dom.title.textContent = source.title;
+					dom.subtitle.textContent = source.subtitle;
+					dom.theme.options[0].textContent = source.autoTheme;
+					dom.theme.options[1].textContent = source.lightTheme;
+					dom.theme.options[2].textContent = source.darkTheme;
+					dom.seatsLabel.textContent = source.seatsLabel;
+					dom.thresholdLabel.textContent = source.thresholdLabel;
+					dom.addParty.textContent = source.addParty;
+					dom.calculate.textContent = source.calculate;
+					dom.edit.textContent = source.edit;
+					dom.showViz.textContent = source.showViz;
+					dom.export.textContent = source.export;
+					dom.hareTitle.textContent = source.hareTitle;
+					dom.sainteLagueTitle.textContent = source.sainteLagueTitle;
+					dom.comparisonTitle.textContent = source.comparisonTitle;
+					dom.vizTitle.textContent = source.vizTitle;
 					this.renderParties();
-					if (!el.results.classList.contains('hidden') && this.data)
+					if (!dom.results.classList.contains('hidden') && this.data)
 						this.renderResults();
 				}
 
 				show(section) {
-					['input', 'results'].forEach(id=>this.el[id].classList.toggle('hidden', id !== section));
+					['input', 'results'].forEach(id=>this.dom[id].classList.toggle('hidden', id !== section));
 				}
 
-				toggleViz(show) {
-					this.el.vizModal.classList.toggle('hidden', !show);
-					if (show)
+				toggleViz(visible) {
+					this.dom.vizModal.classList.toggle('hidden', !visible);
+					if (visible)
 						this.renderViz();
 				}
 
@@ -579,32 +570,30 @@
 				}
 
 				removeParty(id) {
-					this.parties = this.parties.filter(p=>p.id !== id);
+					this.parties = this.parties.filter(party=>party.id !== id);
 					this.renderParties();
 				}
 
 				renderParties() {
-					const container = this.el.partyList;
+					const container = this.dom.partyList;
 					container.innerHTML = '';
 					this.parties.forEach(party=>{
 						const row = document.createElement('div');
 						row.className = 'party-row';
 						const name = Object.assign(document.createElement('input'), {
 							type: 'text',
-							placeholder: this.t('partyPlaceholder'),
+							placeholder: this.string('partyPlaceholder'),
 							value: party.name,
-							onchange: e=>party.name = e.target.value
+							onchange: event=>party.name = event.target.value
 						});
 						const votes = Object.assign(document.createElement('input'), {
 							type: 'number',
-							placeholder: this.t('votesPlaceholder'),
+							placeholder: this.string('votesPlaceholder'),
 							value: party.votes || '',
 							min: '0',
-							onchange: e=>{
-								const floatVal = this.parseLocalFloat(e.target.value);
-								const roundedVal = Math.round(floatVal);
-								party.votes = roundedVal || 0;
-								e.target.value = party.votes || '';
+							onchange: event=>{
+								party.votes = Math.round(this.parseFloat(event.target.value)) || 0;
+								event.target.value = party.votes || '';
 							}
 						});
 						const remove = Object.assign(document.createElement('button'), {
@@ -619,65 +608,62 @@
 				}
 
 				calculate() {
-					const totalSeats = parseInt(this.el.seats.value);
-					const thresholdPct = this.parseLocalFloat(this.el.threshold.value) || 0;
+					const totalSeats = parseInt(this.dom.seats.value);
+					const thresholdPercent = this.parseFloat(this.dom.threshold.value) || 0;
 					if (totalSeats < 1)
-						return alert(this.t('alertSeats'));
-					const valid = this.parties.filter(p=>p.name && p.votes >= 0);
+						return alert(this.string('alertSeats'));
+					const valid = this.parties.filter(party=>party.name && party.votes >= 0);
 					if (!valid.length)
-						return alert(this.t('alertParties'));
+						return alert(this.string('alertParties'));
 
-					const totalVotesAll = valid.reduce((s,p)=>s + p.votes, 0);
-					const thresholdVotes = totalVotesAll * thresholdPct / 100;
-					const passed = valid.filter(p=>p.votes >= thresholdVotes);
-					const failed = valid.filter(p=>p.votes < thresholdVotes);
-					if (!passed.length) {
-						alert(this.t('belowThreshold'));
-						return;
-					}
+					const totalVotesAll = valid.reduce((sum,party)=>sum + party.votes, 0);
+					const thresholdVotes = totalVotesAll * thresholdPercent / 100;
+					const passed = valid.filter(party=>party.votes >= thresholdVotes);
+					const failed = valid.filter(party=>party.votes < thresholdVotes);
+					if (!passed.length)
+						return alert(this.string('belowThreshold'));
 
-					const passedVotes = passed.reduce((s,p)=>s + p.votes, 0);
 					const quota = totalVotesAll / totalSeats;
-					let hare = passed.map(p=>({
-						...p,
-						hareSeats: Math.floor(p.votes / quota),
-						remainder: p.votes % quota
+					let hare = passed.map(party=>({
+						...party,
+						hareSeats: Math.floor(party.votes / quota),
+						remainder: party.votes % quota
 					}));
-					let allocated = hare.reduce((s,p)=>s + p.hareSeats, 0);
+					let allocated = hare.reduce((sum,party)=>sum + party.hareSeats, 0);
 					hare.sort((a,b)=>b.remainder - a.remainder || b.votes - a.votes);
 					for (let i = 0; i < totalSeats - allocated; i++)
 						if (hare[i])
 							hare[i].hareSeats++;
 
-					let sl = passed.map(p=>({
-						...p,
+					let sainteLague = passed.map(party=>({
+						...party,
 						slSeats: 0
 					}));
 					const steps = [];
 					for (let i = 1; i <= totalSeats; i++) {
 						let max = -1
 						  , winner = -1;
-						const quotients = sl.map((p,idx)=>{
-							const divisor = 2 * p.slSeats + 1;
-							const quotient = p.votes / divisor;
+						const quotients = sainteLague.map((party,index)=>{
+							const divisor = 2 * party.slSeats + 1;
+							const quotient = party.votes / divisor;
 							if (quotient > max) {
 								max = quotient;
-								winner = idx;
+								winner = index;
 							}
 							return {
-								id: p.id,
-								name: p.name,
+								id: party.id,
+								name: party.name,
 								quotient,
 								divisor
 							};
 						}
 						);
 						if (winner !== -1) {
-							sl[winner].slSeats++;
+							sainteLague[winner].slSeats++;
 							steps.push({
 								round: i,
-								winner: sl[winner].name,
-								winnerId: sl[winner].id,
+								winner: sainteLague[winner].name,
+								winnerId: sainteLague[winner].id,
 								winningQuotient: max,
 								quotients
 							});
@@ -687,16 +673,16 @@
 					this.data = {
 						totalVotes: totalVotesAll,
 						thresholdVotes,
-						thresholdPct,
+						thresholdPercent,
 						totalSeats,
 						quota,
 						steps,
-						results: valid.map(p=>{
-							const h = hare.find(x=>x.id === p.id);
-							const s = sl.find(x=>x.id === p.id);
+						results: valid.map(party=>{
+							const h = hare.find(x=>x.id === party.id);
+							const s = sainteLague.find(x=>x.id === party.id);
 							return {
-								...p,
-								passed: p.votes >= thresholdVotes,
+								...party,
+								passed: party.votes >= thresholdVotes,
 								hareSeats: h?.hareSeats || 0,
 								slSeats: s?.slSeats || 0,
 								remainder: h?.remainder || 0
@@ -711,29 +697,33 @@
 				renderResults() {
 					if (!this.data)
 						return;
-					const {results, totalVotes, thresholdVotes, thresholdPct, quota} = this.data;
+					const {results, totalVotes, thresholdVotes, thresholdPercent, quota} = this.data;
 					const passed = results.filter(r=>r.passed);
 					const failed = results.filter(r=>!r.passed);
 
-					this.el.hareResults.innerHTML = `
-					<p class="info-text">${this.t('quota')}: ${this.fmt(quota)}</p>
-					<p class="info-text">${this.t('totalVotes')}: ${this.fmt(totalVotes)}</p>
-					<p class="info-text">${this.t('thresholdVotes')} (${this.fmt(thresholdPct)}%): ${this.fmt(thresholdVotes, {maximumFractionDigits: 0})}</p>
-					<table><thead><tr><th>${this.t('party')}</th><th>${this.t('votes')}</th><th>${this.t('seatsCol')}</th><th>${this.t('remainder')}</th></tr></thead>
-					<tbody>${[...passed].sort((a,b)=>b.hareSeats - a.hareSeats).map(r=>`<tr><td>${escape(r.name)}</td><td>${this.fmt(r.votes)}</td><td><strong>${r.hareSeats}</strong></td><td>${this.fmt(r.remainder, {maximumFractionDigits: 0})}</td></tr>`).join('')}</tbody></table>
-					${failed.length ? `<p class="info-text" style="margin-top:0.5rem;font-style:italic;">${this.t('belowThreshold')}: ${failed.map(p=>escape(p.name)).join(', ')}</p>` : ''}`;
+					this.dom.hareResults.innerHTML = `
+					<p class="info-text">${this.string('quota')}: ${this.format(quota)}</p>
+					<p class="info-text">${this.string('totalVotes')}: ${this.format(totalVotes)}</p>
+					<p class="info-text">${this.string('thresholdVotes')} (${this.format(thresholdPercent)}%): ${this.format(thresholdVotes, {
+						maximumFractionDigits: 0
+					})}</p>
+					<table><thead><tr><th>${this.string('party')}</th><th>${this.string('votes')}</th><th>${this.string('seatsCol')}</th><th>${this.string('remainder')}</th></tr></thead>
+					<tbody>${[...passed].sort((a,b)=>b.hareSeats - a.hareSeats).map(r=>`<tr><td>${escape(r.name)}</td><td>${this.format(r.votes)}</td><td><strong>${r.hareSeats}</strong></td><td>${this.format(r.remainder, {
+						maximumFractionDigits: 0
+					})}</td></tr>`).join('')}</tbody></table>
+					${failed.length ? `<p class="info-text" style="margin-top:.5rem;font-style:italic">${this.string('belowThreshold')}: ${failed.map(p=>escape(p.name)).join(', ')}</p>` : ''}`;
 
-					this.el.sainteLagueResults.innerHTML = `
-					<p class="info-text">${this.t('divisorsText')}</p><p class="info-text spacer">&nbsp;</p><p class="info-text spacer">&nbsp;</p>
-					<table><thead><tr><th>${this.t('party')}</th><th>${this.t('votes')}</th><th>${this.t('seatsCol')}</th></tr></thead>
-					<tbody>${[...passed].sort((a,b)=>b.slSeats - a.slSeats).map(r=>`<tr><td>${escape(r.name)}</td><td>${this.fmt(r.votes)}</td><td><strong>${r.slSeats}</strong></td></tr>`).join('')}</tbody></table>`;
+					this.dom.sainteLagueResults.innerHTML = `
+					<p class="info-text">${this.string('divisorsText')}</p><p class="info-text spacer">&nbsp;</p><p class="info-text spacer">&nbsp;</p>
+					<table><thead><tr><th>${this.string('party')}</th><th>${this.string('votes')}</th><th>${this.string('seatsCol')}</th></tr></thead>
+					<tbody>${[...passed].sort((a,b)=>b.slSeats - a.slSeats).map(r=>`<tr><td>${escape(r.name)}</td><td>${this.format(r.votes)}</td><td><strong>${r.slSeats}</strong></td></tr>`).join('')}</tbody></table>`;
 
-					this.el.comparisonResults.innerHTML = `
-					<table><thead><tr><th>${this.t('party')}</th><th>Hare</th><th>Sainte-Laguë</th><th>${this.t('diff')}</th></tr></thead>
+					this.dom.comparisonResults.innerHTML = `
+					<table><thead><tr><th>${this.string('party')}</th><th>Hare</th><th>Sainte-Laguë</th><th>${this.string('diff')}</th></tr></thead>
 					<tbody>${[...results].sort((a,b)=>b.votes - a.votes).map(r=>{
 						const diff = r.slSeats - r.hareSeats;
 						const cls = diff > 0 ? 'diff-positive' : diff < 0 ? 'diff-negative' : 'diff-neutral';
-						return `<tr><td>${escape(r.name)}${!r.passed ? ` ( < ${this.fmt(thresholdPct)}%)` : ''}</td><td>${r.hareSeats}</td><td>${r.slSeats}</td><td class="${cls}">${diff > 0 ? '+' : ''}${diff}</td></tr>`;
+						return `<tr><td>${escape(r.name)}${!r.passed ? ` ( < ${this.format(thresholdPercent)}%)` : ''}</td><td>${r.hareSeats}</td><td>${r.slSeats}</td><td class="${cls}">${diff > 0 ? '+' : ''}${diff}</td></tr>`;
 					}
 					).join('')}</tbody></table>`;
 				}
@@ -742,32 +732,38 @@
 					const {steps} = this.data;
 					if (!steps?.length)
 						return;
-					this.el.vizSteps.innerHTML = `
-					<table><thead><tr><th>${this.t('round')}</th><th>${this.t('winner')}</th><th>${this.t('quotient')}</th><th>${this.t('divisor')}</th></tr></thead>
-					<tbody>${steps.map(s=>`<tr><td>${this.fmtStr('seatAllocated', {
+					this.dom.vizSteps.innerHTML = `
+					<table><thead><tr><th>${this.string('round')}</th><th>${this.string('winner')}</th><th>${this.string('quotient')}</th><th>${this.string('divisor')}</th></tr></thead>
+					<tbody>${steps.map(s=>`<tr><td>${this.template('seatAllocated', {
 						n: s.round
-					})}</td><td><strong>${escape(s.winner)}</strong></td><td>${this.fmt(s.winningQuotient, {maximumFractionDigits: 2})}</td><td>${s.quotients.find(q=>q.id === s.winnerId).divisor}</td></tr>`).join('')}</tbody></table>
-					<h3 style="margin-top:2rem">${this.t('quotientDetail')}</h3>
-					${steps.map(s=>`<div class="viz-step"><h4>${this.fmtStr('seatAllocated', {
+					})}</td><td><strong>${escape(s.winner)}</strong></td><td>${this.format(s.winningQuotient, {
+						maximumFractionDigits: 2
+					})}</td><td>${s.quotients.find(q=>q.id === s.winnerId).divisor}</td></tr>`).join('')}</tbody></table>
+					<h3 style="margin-top:2rem">${this.string('quotientDetail')}</h3>
+					${steps.map(s=>`<div class="viz-step"><h4>${this.template('seatAllocated', {
 						n: s.round
-					})} - ${this.t('winnerPrefix')}${escape(s.winner)}</h4>
+					})} - ${this.string('winnerPrefix')}${escape(s.winner)}</h4>
 					<table><tr>${s.quotients.map(q=>`<th>${escape(q.name)} (/${q.divisor})</th>`).join('')}</tr>
-					<tr>${s.quotients.map(q=>`<td class="${q.id === s.winnerId ? 'viz-row-highlight' : ''}" style="${q.id === s.winnerId ? 'font-weight:bold' : ''}">${this.fmt(q.quotient, {maximumFractionDigits: 2})}</td>`).join('')}</tr></table></div>`).join('')}`;
+					<tr>${s.quotients.map(q=>`<td class="${q.id === s.winnerId ? 'viz-row-highlight' : ''}" style="${q.id === s.winnerId ? 'font-weight:bold' : ''}">${this.format(q.quotient, {
+						maximumFractionDigits: 2
+					})}</td>`).join('')}</tr></table></div>`).join('')}`;
 				}
 
 				exportCsv() {
 					if (!this.data)
 						return;
 					const {results} = this.data;
-					const total = results.reduce((s,p)=>s + p.votes, 0);
-					const csv = 'Party,Votes,Share (%),Passed Threshold?,Hare Seats,Sainte-Laguë Seats,Difference\n' + results.map(r=>`"${r.name.replace(/"/g, '""')}",${r.votes},${this.fmt(r.votes / total * 100, {minimumFractionDigits: 2, maximumFractionDigits: 2})},${r.passed ? 'Yes' : 'No'},${r.hareSeats},${r.slSeats},${r.slSeats - r.hareSeats}`).join('\n');
-					const link = Object.assign(document.createElement('a'), {
+					const total = results.reduce((sum,party)=>sum + party.votes, 0);
+					const csv = 'Party,Votes,Share (%),Passed Threshold?,Hare Seats,Sainte-Laguë Seats,Difference\n' + results.map(r=>`"${r.name.replace(/"/g, '""')}",${r.votes},${this.format(r.votes / total * 100, {
+						minimumFractionDigits: 2,
+						maximumFractionDigits: 2
+					})},${r.passed ? 'Yes' : 'No'},${r.hareSeats},${r.slSeats},${r.slSeats - r.hareSeats}`).join('\n');
+					Object.assign(document.createElement('a'), {
 						href: URL.createObjectURL(new Blob([csv],{
 							type: 'text/csv'
 						})),
 						download: `apportionment_${new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-')}.csv`
-					});
-					link.click();
+					}).click();
 				}
 			}
 
