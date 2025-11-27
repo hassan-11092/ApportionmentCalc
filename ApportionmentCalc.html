@@ -637,7 +637,7 @@
 					}
 
 					const passedVotes = passed.reduce((s,p)=>s + p.votes, 0);
-					const quota = passedVotes / totalSeats;
+					const quota = totalVotesAll / totalSeats;
 					let hare = passed.map(p=>({
 						...p,
 						hareSeats: Math.floor(p.votes / quota),
