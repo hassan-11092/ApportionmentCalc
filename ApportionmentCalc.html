@@ -361,7 +361,7 @@
 			</div>
 		</div>
 		<script>
-			const strings = {
+			const text = {
 				en: {
 					title: 'ApportionmentCalc',
 					subtitle: 'Electoral seat allocation calculator: Sainte Laguë vs Hare Quota',
@@ -497,7 +497,7 @@
 				}
 
 				string(key) {
-					return strings[this.language][key] || key;
+					return text[this.language][key] || key;
 				}
 
 				format(value, options={}) {
@@ -524,7 +524,7 @@
 					this.dom.language.value = language;
 					document.documentElement.lang = language;
 					const {dom} = this
-					  , source = strings[language];
+					  , source = text[language];
 					dom.title.textContent = source.title;
 					dom.subtitle.textContent = source.subtitle;
 					dom.theme.options[0].textContent = source.autoTheme;
@@ -616,7 +616,6 @@
 					const totalVotes = valid.reduce((sum,party)=>sum + party.votes, 0);
 					const thresholdVotes = totalVotes * thresholdPercent / 100;
 					const passed = valid.filter(party=>party.votes >= thresholdVotes);
-					const failed = valid.filter(party=>party.votes < thresholdVotes);
 					if (!passed.length)
 						return alert(this.string('belowThreshold'));
 
@@ -700,25 +699,25 @@
 					const failed = results.filter(r=>!r.passed);
 
 					this.dom.hareResults.innerHTML = `
-			<p class="info-text">${this.string('quota')}: ${this.format(quota)}</p>
-			<p class="info-text">${this.string('totalVotes')}: ${this.format(totalVotes)}</p>
-			<p class="info-text">${this.string('thresholdVotes')} (${this.format(thresholdPercent)}%): ${this.format(thresholdVotes, {
+					<p class="info-text">${this.string('quota')}: ${this.format(quota)}</p>
+					<p class="info-text">${this.string('totalVotes')}: ${this.format(totalVotes)}</p>
+					<p class="info-text">${this.string('thresholdVotes')} (${this.format(thresholdPercent)}%): ${this.format(thresholdVotes, {
 						maximumFractionDigits: 0
 					})}</p>
-			<table><thead><tr><th>${this.string('party')}</th><th>${this.string('votes')}</th><th>${this.string('seatsCol')}</th><th>${this.string('remainder')}</th></tr></thead>
-			<tbody>${[...passed].sort((a,b)=>b.hareSeats - a.hareSeats).map(r=>`<tr><td>${escape(r.name)}</td><td>${this.format(r.votes)}</td><td><strong>${r.hareSeats}</strong></td><td>${this.format(r.remainder, {
+					<table><thead><tr><th>${this.string('party')}</th><th>${this.string('votes')}</th><th>${this.string('seatsCol')}</th><th>${this.string('remainder')}</th></tr></thead>
+					<tbody>${[...passed].sort((a,b)=>b.hareSeats - a.hareSeats).map(r=>`<tr><td>${escape(r.name)}</td><td>${this.format(r.votes)}</td><td><strong>${r.hareSeats}</strong></td><td>${this.format(r.remainder, {
 						maximumFractionDigits: 0
 					})}</td></tr>`).join('')}</tbody></table>
-			${failed.length ? `<p class="info-text" style="margin-top:.5rem;font-style:italic">${this.string('belowThreshold')}: ${failed.map(p=>escape(p.name)).join(', ')}</p>` : ''}`;
+					${failed.length ? `<p class="info-text" style="margin-top:.5rem;font-style:italic">${this.string('belowThreshold')}: ${failed.map(p=>escape(p.name)).join(', ')}</p>` : ''}`;
 
 					this.dom.sainteLagueResults.innerHTML = `
-			<p class="info-text">${this.string('divisorsText')}</p><p class="info-text spacer">&nbsp;</p><p class="info-text spacer">&nbsp;</p>
-			<table><thead><tr><th>${this.string('party')}</th><th>${this.string('votes')}</th><th>${this.string('seatsCol')}</th></tr></thead>
-			<tbody>${[...passed].sort((a,b)=>b.slSeats - a.slSeats).map(r=>`<tr><td>${escape(r.name)}</td><td>${this.format(r.votes)}</td><td><strong>${r.slSeats}</strong></td></tr>`).join('')}</tbody></table>`;
+					<p class="info-text">${this.string('divisorsText')}</p><p class="info-text spacer">&nbsp;</p><p class="info-text spacer">&nbsp;</p>
+					<table><thead><tr><th>${this.string('party')}</th><th>${this.string('votes')}</th><th>${this.string('seatsCol')}</th></tr></thead>
+					<tbody>${[...passed].sort((a,b)=>b.slSeats - a.slSeats).map(r=>`<tr><td>${escape(r.name)}</td><td>${this.format(r.votes)}</td><td><strong>${r.slSeats}</strong></td></tr>`).join('')}</tbody></table>`;
 
 					this.dom.comparisonResults.innerHTML = `
-			<table><thead><tr><th>${this.string('party')}</th><th>Hare</th><th>Sainte-Laguë</th><th>${this.string('diff')}</th></tr></thead>
-			<tbody>${[...results].sort((a,b)=>b.votes - a.votes).map(r=>{
+					<table><thead><tr><th>${this.string('party')}</th><th>Hare</th><th>Sainte-Laguë</th><th>${this.string('diff')}</th></tr></thead>
+					<tbody>${[...results].sort((a,b)=>b.votes - a.votes).map(r=>{
 						const diff = r.slSeats - r.hareSeats;
 						const cls = diff > 0 ? 'diff-positive' : diff < 0 ? 'diff-negative' : 'diff-neutral';
 						return `<tr><td>${escape(r.name)}${!r.passed ? ` ( < ${this.format(thresholdPercent)}%)` : ''}</td><td>${r.hareSeats}</td><td>${r.slSeats}</td><td class="${cls}">${diff > 0 ? '+' : ''}${diff}</td></tr>`;
@@ -731,18 +730,18 @@
 					if (!steps?.length)
 						return;
 					this.dom.vizSteps.innerHTML = `
-			<table><thead><tr><th>${this.string('round')}</th><th>${this.string('winner')}</th><th>${this.string('quotient')}</th><th>${this.string('divisor')}</th></tr></thead>
-			<tbody>${steps.map(s=>`<tr><td>${this.template('seatAllocated', {
+					<table><thead><tr><th>${this.string('round')}</th><th>${this.string('winner')}</th><th>${this.string('quotient')}</th><th>${this.string('divisor')}</th></tr></thead>
+					<tbody>${steps.map(s=>`<tr><td>${this.template('seatAllocated', {
 						n: s.round
 					})}</td><td><strong>${escape(s.winner)}</strong></td><td>${this.format(s.winningQuotient, {
 						maximumFractionDigits: 2
 					})}</td><td>${s.quotients.find(q=>q.id === s.winnerId).divisor}</td></tr>`).join('')}</tbody></table>
-			<h3 style="margin-top:2rem">${this.string('quotientDetail')}</h3>
-			${steps.map(s=>`<div class="viz-step"><h4>${this.template('seatAllocated', {
+					<h3 style="margin-top:2rem">${this.string('quotientDetail')}</h3>
+					${steps.map(s=>`<div class="viz-step"><h4>${this.template('seatAllocated', {
 						n: s.round
 					})} - ${this.string('winnerPrefix')}${escape(s.winner)}</h4>
-			<table><tr>${s.quotients.map(q=>`<th>${escape(q.name)} (/${q.divisor})</th>`).join('')}</tr>
-			<tr>${s.quotients.map(q=>`<td class="${q.id === s.winnerId ? 'viz-row-highlight' : ''}" style="${q.id === s.winnerId ? 'font-weight:bold' : ''}">${this.format(q.quotient, {
+					<table><tr>${s.quotients.map(q=>`<th>${escape(q.name)} (/${q.divisor})</th>`).join('')}</tr>
+					<tr>${s.quotients.map(q=>`<td class="${q.id === s.winnerId ? 'viz-row-highlight' : ''}" style="${q.id === s.winnerId ? 'font-weight:bold' : ''}">${this.format(q.quotient, {
 						maximumFractionDigits: 2
 					})}</td>`).join('')}</tr></table></div>`).join('')}`;
 				}
