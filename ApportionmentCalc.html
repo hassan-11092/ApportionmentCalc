@@ -449,27 +449,14 @@
 			class ApportionmentCalc {
 				constructor() {
 					this.dom = Object.fromEntries([...document.querySelectorAll('[id]')].map(node=>[node.id, node]));
-					this.parties = [{
-						id: 1,
-						name: 'Apple Party',
-						votes: 25000
-					}, {
-						id: 2,
-						name: 'Banana Party',
-						votes: 15000
-					}, {
-						id: 3,
-						name: 'Cherry Party',
-						votes: 9000
-					}, {
-						id: 4,
-						name: 'Date Party',
-						votes: 5000
-					}, {
-						id: 5,
-						name: 'Elderberry Party',
-						votes: 1500
-					}];
+					const p = (id, name, votes) => ({id, name, votes});
+					this.parties = [
+						p(1, 'Apple Party', 25000),
+						p(2, 'Banana Party', 15000),
+						p(3, 'Cherry Party', 9000),
+						p(4, 'Date Party', 5000),
+						p(5, 'Elderberry Party', 1500)
+					];
 					this.nextId = 6;
 					this.data = null;
 					this.language = navigator.language?.startsWith('id') ? 'id' : 'en';
