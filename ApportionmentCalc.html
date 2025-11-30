@@ -217,7 +217,7 @@
 				opacity: .5
 			}
 
-			.viz-step {
+			.visualization-step {
 				background: var(--surface);
 				border: 1px solid var(--border);
 				margin-bottom: 1rem;
@@ -225,11 +225,11 @@
 				border-radius: 4px
 			}
 
-			.viz-row-highlight {
+			.visualization-row-highlight {
 				background-color: rgba(0,112,234,.1)
 			}
 
-			#vizModal {
+			#visualizationModal {
 				position: fixed;
 				top: 0;
 				left: 0;
@@ -242,7 +242,7 @@
 				z-index: 1000
 			}
 
-			#vizContent {
+			#visualizationContent {
 				background: var(--surface);
 				padding: 2rem;
 				border-radius: 8px;
@@ -253,7 +253,7 @@
 				position: relative
 			}
 
-			#closeViz {
+			#closeVisualization {
 				position: absolute;
 				top: 1rem;
 				right: 1rem;
@@ -334,7 +334,7 @@
 			<div id="results" class="hidden">
 				<div class="action-buttons">
 					<button id="edit" class="secondary"></button>
-					<button id="showViz" class="secondary"></button>
+					<button id="showVisualization" class="secondary"></button>
 					<button id="export" class="success"></button>
 				</div>
 				<div class="results-grid">
@@ -353,11 +353,11 @@
 				</div>
 			</div>
 		</div>
-		<div id="vizModal" class="hidden">
-			<div id="vizContent">
-				<button id="closeViz" class="secondary">×</button>
-				<h2 id="vizTitle"></h2>
-				<div id="vizSteps"></div>
+		<div id="visualizationModal" class="hidden">
+			<div id="visualizationContent">
+				<button id="closeVisualization" class="secondary">×</button>
+				<h2 id="visualizationTitle"></h2>
+				<div id="visualizationSteps"></div>
 			</div>
 		</div>
 		<script>
@@ -373,15 +373,15 @@
 					addParty: '+ Add Party',
 					calculate: 'Calculate Allocation',
 					edit: 'Edit Inputs',
-					showViz: 'Show Sainte Laguë Steps',
+					showVisualization: 'Show Sainte Laguë Steps',
 					export: 'Export to CSV',
 					hareTitle: 'Hare Quota Method',
 					sainteLagueTitle: 'Sainte Laguë Method',
 					comparisonTitle: 'Results Comparison',
-					vizTitle: 'Sainte Laguë Step-by-Step',
+					visualizationTitle: 'Sainte Laguë Step-by-Step',
 					party: 'Party',
 					votes: 'Votes',
-					seatsCol: 'Seats',
+					seatsColumn: 'Seats',
 					remainder: 'Remainder',
 					diff: 'Diff',
 					quota: 'Quota',
@@ -412,15 +412,15 @@
 					addParty: '+ Tambah Partai',
 					calculate: 'Hitung Alokasi',
 					edit: 'Ubah Input',
-					showViz: 'Tampilkan Langkah Sainte Laguë',
+					showVisualization: 'Tampilkan Langkah Sainte Laguë',
 					export: 'Ekspor ke CSV',
 					hareTitle: 'Metode Kuota Hare',
 					sainteLagueTitle: 'Metode Sainte Laguë',
 					comparisonTitle: 'Perbandingan Hasil',
-					vizTitle: 'Langkah-langkah Sainte Laguë',
+					visualizationTitle: 'Langkah-langkah Sainte Laguë',
 					party: 'Partai',
 					votes: 'Suara',
-					seatsCol: 'Kursi',
+					seatsColumn: 'Kursi',
 					remainder: 'Sisa',
 					diff: 'Selisih',
 					quota: 'BPP (Bilangan Pembagi Pemilih)',
@@ -442,22 +442,37 @@
 				}
 			};
 
-			const escape = value=>Object.assign(document.createElement('p'), {
+			const el = (tag,props,children)=>{
+				const element = Object.assign(document.createElement(tag), props);
+				if (children)
+					element.append(...[children].flat());
+				return element;
+			}
+			;
+			const escape = value=>el('p', {
 				textContent: value
 			}).innerHTML;
+			const download = (href,name)=>el('a', {
+				href,
+				download: name
+			}).click();
+			const timestamp = ()=>new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-');
 
 			class ApportionmentCalc {
 				constructor() {
 					this.dom = Object.fromEntries([...document.querySelectorAll('[id]')].map(node=>[node.id, node]));
-					const p = (id, name, votes) => ({id, name, votes});
-					this.parties = [
-						p(1, 'Apple Party', 25000),
-						p(2, 'Banana Party', 15000),
-						p(3, 'Cherry Party', 9000),
-						p(4, 'Date Party', 5000),
-						p(5, 'Elderberry Party', 1500)
-					];
-					this.nextId = 6;
+					this.parties = Object.entries({
+						'Apple Party': 25000,
+						'Banana Party': 15000,
+						'Cherry Party': 9000,
+						'Date Party': 5000,
+						'Elderberry Party': 1500
+					}).map(([name,votes],i)=>({
+						id: i + 1,
+						name,
+						votes
+					}));
+					this.nextId = this.parties.length + 1;
 					this.data = null;
 					this.language = navigator.language?.startsWith('id') ? 'id' : 'en';
 					this.init();
@@ -472,30 +487,28 @@
 
 				bind() {
 					const {dom} = this;
-					dom.addParty.onclick = ()=>this.addParty();
-					dom.calculate.onclick = ()=>this.calculate();
-					dom.edit.onclick = ()=>this.show('input');
-					dom.showViz.onclick = ()=>this.toggleViz(true);
-					dom.closeViz.onclick = ()=>this.toggleViz(false);
-					dom.vizModal.onclick = event=>event.target === dom.vizModal && this.toggleViz(false);
-					dom.export.onclick = ()=>this.exportCsv();
+					const on = (id,handler)=>dom[id].onclick = handler;
+					on('addParty', ()=>this.addParty());
+					on('calculate', ()=>this.calculate());
+					on('edit', ()=>this.show('input'));
+					on('showVisualization', ()=>this.toggleVisualization(true));
+					on('closeVisualization', ()=>this.toggleVisualization(false));
+					on('export', ()=>this.exportCsv());
+					dom.visualizationModal.onclick = event=>event.target === dom.visualizationModal && this.toggleVisualization(false);
 					dom.language.onchange = event=>this.setLanguage(event.target.value);
 					dom.theme.onchange = event=>this.setTheme(event.target.value);
 				}
 
-				string(key) {
+				str(key) {
 					return text[this.language][key] || key;
 				}
-
-				format(value, options={}) {
+				fmt(value, options={}) {
 					return value.toLocaleString(this.language === 'id' ? 'id-ID' : 'en-US', options);
 				}
-
-				template(key, values) {
-					return Object.entries(values || {}).reduce((result,[k,v])=>result.replace(`{${k}}`, v), this.string(key));
+				tpl(key, values) {
+					return Object.entries(values || {}).reduce((r,[k,v])=>r.replace(`{${k}}`, v), this.str(key));
 				}
-
-				parseNumber(value) {
+				parseNum(value) {
 					return typeof value === 'string' ? parseFloat(value.replace(',', '.')) : value;
 				}
 
@@ -511,23 +524,13 @@
 					this.dom.language.value = language;
 					document.documentElement.lang = language;
 					const {dom} = this
-					  , source = text[language];
-					dom.title.textContent = source.title;
-					dom.subtitle.textContent = source.subtitle;
-					dom.theme.options[0].textContent = source.autoTheme;
-					dom.theme.options[1].textContent = source.lightTheme;
-					dom.theme.options[2].textContent = source.darkTheme;
-					dom.seatsLabel.textContent = source.seatsLabel;
-					dom.thresholdLabel.textContent = source.thresholdLabel;
-					dom.addParty.textContent = source.addParty;
-					dom.calculate.textContent = source.calculate;
-					dom.edit.textContent = source.edit;
-					dom.showViz.textContent = source.showViz;
-					dom.export.textContent = source.export;
-					dom.hareTitle.textContent = source.hareTitle;
-					dom.sainteLagueTitle.textContent = source.sainteLagueTitle;
-					dom.comparisonTitle.textContent = source.comparisonTitle;
-					dom.vizTitle.textContent = source.vizTitle;
+					  , src = text[language];
+					const set = (id,key)=>dom[id].textContent = src[key] || src[id];
+					['title', 'subtitle', 'seatsLabel', 'thresholdLabel', 'addParty', 'calculate', 'edit', 'export', 'hareTitle', 'sainteLagueTitle', 'comparisonTitle', 'visualizationTitle'].forEach(id=>set(id, id));
+					dom.showVisualization.textContent = src.showVisualization;
+					dom.theme.options[0].textContent = src.autoTheme;
+					dom.theme.options[1].textContent = src.lightTheme;
+					dom.theme.options[2].textContent = src.darkTheme;
 					this.renderParties();
 					if (!dom.results.classList.contains('hidden') && this.data)
 						this.renderResults();
@@ -537,10 +540,10 @@
 					['input', 'results'].forEach(id=>this.dom[id].classList.toggle('hidden', id !== section));
 				}
 
-				toggleViz(visible) {
-					this.dom.vizModal.classList.toggle('hidden', !visible);
+				toggleVisualization(visible) {
+					this.dom.visualizationModal.classList.toggle('hidden', !visible);
 					if (visible)
-						this.renderViz();
+						this.renderVisualization();
 				}
 
 				addParty() {
@@ -553,104 +556,99 @@
 				}
 
 				removeParty(id) {
-					this.parties = this.parties.filter(party=>party.id !== id);
+					this.parties = this.parties.filter(p=>p.id !== id);
 					this.renderParties();
 				}
 
 				renderParties() {
-					const container = this.dom.partyList;
-					container.innerHTML = '';
-					this.parties.forEach(party=>{
-						const row = document.createElement('div');
-						row.className = 'party-row';
-						const name = Object.assign(document.createElement('input'), {
+					this.dom.partyList.replaceChildren(...this.parties.map(p=>{
+						const updateVotes = e=>{
+							p.votes = Math.round(this.parseNum(e.target.value)) || 0;
+							e.target.value = p.votes || '';
+						}
+						;
+						return el('div', {
+							className: 'party-row'
+						}, [el('input', {
 							type: 'text',
-							placeholder: this.string('partyPlaceholder'),
-							value: party.name,
-							onchange: event=>party.name = event.target.value
-						});
-						const votes = Object.assign(document.createElement('input'), {
+							placeholder: this.str('partyPlaceholder'),
+							value: p.name,
+							onchange: e=>p.name = e.target.value
+						}), el('input', {
 							type: 'number',
-							placeholder: this.string('votesPlaceholder'),
-							value: party.votes || '',
+							placeholder: this.str('votesPlaceholder'),
+							value: p.votes || '',
 							min: '0',
-							onchange: event=>{
-								party.votes = Math.round(this.parseNumber(event.target.value)) || 0;
-								event.target.value = party.votes || '';
-							}
-						});
-						const remove = Object.assign(document.createElement('button'), {
+							onchange: updateVotes
+						}), el('button', {
 							className: 'danger',
 							textContent: '×',
-							onclick: ()=>this.removeParty(party.id)
-						});
-						row.append(name, votes, remove);
-						container.appendChild(row);
+							onclick: ()=>this.removeParty(p.id)
+						})]);
 					}
-					);
+					));
 				}
 
 				calculate() {
 					const totalSeats = parseInt(this.dom.seats.value);
-					const thresholdPercent = this.parseNumber(this.dom.threshold.value) || 0;
+					const thresholdPercent = this.parseNum(this.dom.threshold.value) || 0;
 					if (totalSeats < 1)
-						return alert(this.string('alertSeats'));
+						return alert(this.str('alertSeats'));
 
-					const valid = this.parties.filter(party=>party.name && party.votes >= 0);
+					const valid = this.parties.filter(p=>p.name && p.votes >= 0);
 					if (!valid.length)
-						return alert(this.string('alertParties'));
+						return alert(this.str('alertParties'));
 
-					const totalVotes = valid.reduce((sum,party)=>sum + party.votes, 0);
+					const totalVotes = valid.reduce((sum,p)=>sum + p.votes, 0);
 					if (totalVotes === 0)
-						return alert(this.string('alertParties'));
+						return alert(this.str('alertParties'));
 
 					const thresholdVotes = totalVotes * thresholdPercent / 100;
-					const passed = valid.filter(party=>party.votes >= thresholdVotes);
+					const passed = valid.filter(p=>p.votes >= thresholdVotes);
 					if (!passed.length)
-						return alert(this.string('belowThreshold'));
+						return alert(this.str('belowThreshold'));
 
 					const quota = totalVotes / totalSeats;
-					let hare = passed.map(party=>({
-						...party,
-						hareSeats: Math.floor(party.votes / quota),
-						remainder: party.votes % quota
+					let hare = passed.map(p=>({
+						...p,
+						hareSeats: Math.floor(p.votes / quota),
+						remainder: p.votes % quota
 					}));
-					let allocated = hare.reduce((sum,party)=>sum + party.hareSeats, 0);
+					let allocated = hare.reduce((sum,p)=>sum + p.hareSeats, 0);
 					hare.sort((a,b)=>b.remainder - a.remainder || b.votes - a.votes);
-					for (let i = 0; i < totalSeats - allocated; i++) {
+					for (let i = 0; i < totalSeats - allocated; i++)
 						if (hare[i % hare.length])
 							hare[i % hare.length].hareSeats++;
-					}
 
-					let sainteLague = passed.map(party=>({
-						...party,
+					let sl = passed.map(p=>({
+						...p,
 						slSeats: 0
 					}));
 					const steps = [];
 					for (let i = 1; i <= totalSeats; i++) {
 						let max = -1
 						  , winner = -1;
-						const quotients = sainteLague.map((party,index)=>{
-							const divisor = 2 * party.slSeats + 1;
-							const quotient = party.votes / divisor;
+						const quotients = sl.map((p,idx)=>{
+							const divisor = 2 * p.slSeats + 1
+							  , quotient = p.votes / divisor;
 							if (quotient > max) {
 								max = quotient;
-								winner = index;
+								winner = idx;
 							}
 							return {
-								id: party.id,
-								name: party.name,
+								id: p.id,
+								name: p.name,
 								quotient,
 								divisor
 							};
 						}
 						);
 						if (winner !== -1) {
-							sainteLague[winner].slSeats++;
+							sl[winner].slSeats++;
 							steps.push({
 								round: i,
-								winner: sainteLague[winner].name,
-								winnerId: sainteLague[winner].id,
+								winner: sl[winner].name,
+								winnerId: sl[winner].id,
 								winningQuotient: max,
 								quotients
 							});
@@ -664,12 +662,12 @@
 						totalSeats,
 						quota,
 						steps,
-						results: valid.map(party=>{
-							const h = hare.find(x=>x.id === party.id);
-							const s = sainteLague.find(x=>x.id === party.id);
+						results: valid.map(p=>{
+							const h = hare.find(x=>x.id === p.id)
+							  , s = sl.find(x=>x.id === p.id);
 							return {
-								...party,
-								passed: party.votes >= thresholdVotes,
+								...p,
+								passed: p.votes >= thresholdVotes,
 								hareSeats: h?.hareSeats || 0,
 								slSeats: s?.slSeats || 0,
 								remainder: h?.remainder || 0
@@ -685,53 +683,54 @@
 					if (!this.data)
 						return;
 					const {results, totalVotes, thresholdVotes, thresholdPercent, quota} = this.data;
-					const passed = results.filter(r=>r.passed);
-					const failed = results.filter(r=>!r.passed);
+					const passed = results.filter(r=>r.passed)
+					  , failed = results.filter(r=>!r.passed);
+					const row = (r,seats,extra='')=>`<tr><td>${escape(r.name)}</td><td>${this.fmt(r.votes)}</td><td><strong>${seats}</strong></td>${extra}</tr>`;
 
 					this.dom.hareResults.innerHTML = `
-					<p class="info-text">${this.string('quota')}: ${this.format(quota)}</p>
-					<p class="info-text">${this.string('totalVotes')}: ${this.format(totalVotes)}</p>
-					<p class="info-text">${this.string('thresholdVotes')} (${this.format(thresholdPercent)}%): ${this.format(thresholdVotes, {
+					<p class="info-text">${this.str('quota')}: ${this.fmt(quota)}</p>
+					<p class="info-text">${this.str('totalVotes')}: ${this.fmt(totalVotes)}</p>
+					<p class="info-text">${this.str('thresholdVotes')} (${this.fmt(thresholdPercent)}%): ${this.fmt(thresholdVotes, {
 						maximumFractionDigits: 0
 					})}</p>
-					<table><thead><tr><th>${this.string('party')}</th><th>${this.string('votes')}</th><th>${this.string('seatsCol')}</th><th>${this.string('remainder')}</th></tr></thead>
-					<tbody>${[...passed].sort((a,b)=>b.hareSeats - a.hareSeats).map(r=>`<tr><td>${escape(r.name)}</td><td>${this.format(r.votes)}</td><td><strong>${r.hareSeats}</strong></td><td>${this.format(r.remainder, {
+					<table><thead><tr><th>${this.str('party')}</th><th>${this.str('votes')}</th><th>${this.str('seatsColumn')}</th><th>${this.str('remainder')}</th></tr></thead>
+					<tbody>${[...passed].sort((a,b)=>b.hareSeats - a.hareSeats).map(r=>row(r, r.hareSeats, `<td>${this.fmt(r.remainder, {
 						maximumFractionDigits: 0
-					})}</td></tr>`).join('')}</tbody></table>
-					${failed.length ? `<p class="info-text" style="margin-top:.5rem;font-style:italic">${this.string('belowThreshold')}: ${failed.map(p=>escape(p.name)).join(', ')}</p>` : ''}`;
+					})}</td>`)).join('')}</tbody></table>
+					${failed.length ? `<p class="info-text" style="margin-top:.5rem;font-style:italic">${this.str('belowThreshold')}: ${failed.map(p=>escape(p.name)).join(', ')}</p>` : ''}`;
 
 					this.dom.sainteLagueResults.innerHTML = `
-					<p class="info-text">${this.string('divisorsText')}</p><p class="info-text spacer">&nbsp;</p><p class="info-text spacer">&nbsp;</p>
-					<table><thead><tr><th>${this.string('party')}</th><th>${this.string('votes')}</th><th>${this.string('seatsCol')}</th></tr></thead>
-					<tbody>${[...passed].sort((a,b)=>b.slSeats - a.slSeats).map(r=>`<tr><td>${escape(r.name)}</td><td>${this.format(r.votes)}</td><td><strong>${r.slSeats}</strong></td></tr>`).join('')}</tbody></table>`;
+					<p class="info-text">${this.str('divisorsText')}</p><p class="info-text spacer">&nbsp;</p><p class="info-text spacer">&nbsp;</p>
+					<table><thead><tr><th>${this.str('party')}</th><th>${this.str('votes')}</th><th>${this.str('seatsColumn')}</th></tr></thead>
+					<tbody>${[...passed].sort((a,b)=>b.slSeats - a.slSeats).map(r=>row(r, r.slSeats)).join('')}</tbody></table>`;
 
 					this.dom.comparisonResults.innerHTML = `
-					<table><thead><tr><th>${this.string('party')}</th><th>Hare</th><th>Sainte-Laguë</th><th>${this.string('diff')}</th></tr></thead>
+					<table><thead><tr><th>${this.str('party')}</th><th>Hare</th><th>Sainte-Laguë</th><th>${this.str('diff')}</th></tr></thead>
 					<tbody>${[...results].sort((a,b)=>b.votes - a.votes).map(r=>{
-						const diff = r.slSeats - r.hareSeats;
-						const cls = diff > 0 ? 'diff-positive' : diff < 0 ? 'diff-negative' : 'diff-neutral';
-						return `<tr><td>${escape(r.name)}${!r.passed ? ` ( < ${this.format(thresholdPercent)}%)` : ''}</td><td>${r.hareSeats}</td><td>${r.slSeats}</td><td class="${cls}">${diff > 0 ? '+' : ''}${diff}</td></tr>`;
+						const diff = r.slSeats - r.hareSeats
+						  , cls = diff > 0 ? 'diff-positive' : diff < 0 ? 'diff-negative' : 'diff-neutral';
+						return `<tr><td>${escape(r.name)}${!r.passed ? ` ( < ${this.fmt(thresholdPercent)}%)` : ''}</td><td>${r.hareSeats}</td><td>${r.slSeats}</td><td class="${cls}">${diff > 0 ? '+' : ''}${diff}</td></tr>`;
 					}
 					).join('')}</tbody></table>`;
 				}
 
-				renderViz() {
+				renderVisualization() {
 					const {steps} = this.data;
 					if (!steps?.length)
 						return;
-					this.dom.vizSteps.innerHTML = `
-					<table><thead><tr><th>${this.string('round')}</th><th>${this.string('winner')}</th><th>${this.string('quotient')}</th><th>${this.string('divisor')}</th></tr></thead>
-					<tbody>${steps.map(s=>`<tr><td>${this.template('seatAllocated', {
+					this.dom.visualizationSteps.innerHTML = `
+					<table><thead><tr><th>${this.str('round')}</th><th>${this.str('winner')}</th><th>${this.str('quotient')}</th><th>${this.str('divisor')}</th></tr></thead>
+					<tbody>${steps.map(s=>`<tr><td>${this.tpl('seatAllocated', {
 						n: s.round
-					})}</td><td><strong>${escape(s.winner)}</strong></td><td>${this.format(s.winningQuotient, {
+					})}</td><td><strong>${escape(s.winner)}</strong></td><td>${this.fmt(s.winningQuotient, {
 						maximumFractionDigits: 2
 					})}</td><td>${s.quotients.find(q=>q.id === s.winnerId).divisor}</td></tr>`).join('')}</tbody></table>
-					<h3 style="margin-top:2rem">${this.string('quotientDetail')}</h3>
-					${steps.map(s=>`<div class="viz-step"><h4>${this.template('seatAllocated', {
+					<h3 style="margin-top:2rem">${this.str('quotientDetail')}</h3>
+					${steps.map(s=>`<div class="visualization-step"><h4>${this.tpl('seatAllocated', {
 						n: s.round
-					})} - ${this.string('winnerPrefix')}${escape(s.winner)}</h4>
+					})} - ${this.str('winnerPrefix')}${escape(s.winner)}</h4>
 					<table><tr>${s.quotients.map(q=>`<th>${escape(q.name)} (/${q.divisor})</th>`).join('')}</tr>
-					<tr>${s.quotients.map(q=>`<td class="${q.id === s.winnerId ? 'viz-row-highlight' : ''}" style="${q.id === s.winnerId ? 'font-weight:bold' : ''}">${this.format(q.quotient, {
+					<tr>${s.quotients.map(q=>`<td class="${q.id === s.winnerId ? 'visualization-row-highlight' : ''}" style="${q.id === s.winnerId ? 'font-weight:bold' : ''}">${this.fmt(q.quotient, {
 						maximumFractionDigits: 2
 					})}</td>`).join('')}</tr></table></div>`).join('')}`;
 				}
@@ -739,18 +738,15 @@
 				exportCsv() {
 					if (!this.data)
 						return;
-					const {results} = this.data;
-					const total = results.reduce((sum,party)=>sum + party.votes, 0);
-					const csv = 'Party,Votes,Share (%),Passed Threshold?,Hare Seats,Sainte-Laguë Seats,Difference\n' + results.map(r=>`"${r.name.replace(/"/g, '""')}",${r.votes},"${this.format(r.votes / total * 100, {
+					const {results} = this.data
+					  , total = results.reduce((sum,p)=>sum + p.votes, 0);
+					const csv = 'Party,Votes,Share (%),Passed Threshold?,Hare Seats,Sainte-Laguë Seats,Difference\n' + results.map(r=>`"${r.name.replace(/"/g, '""')}",${r.votes},"${this.fmt(r.votes / total * 100, {
 						minimumFractionDigits: 2,
 						maximumFractionDigits: 2
 					})}",${r.passed ? 'Yes' : 'No'},${r.hareSeats},${r.slSeats},${r.slSeats - r.hareSeats}`).join('\n');
-					Object.assign(document.createElement('a'), {
-						href: URL.createObjectURL(new Blob([csv],{
-							type: 'text/csv'
-						})),
-						download: `apportionment_${new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-')}.csv`
-					}).click();
+					download(URL.createObjectURL(new Blob([csv],{
+						type: 'text/csv'
+					})), `apportionment_${timestamp()}.csv`);
 				}
 			}
 
