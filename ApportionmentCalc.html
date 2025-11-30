@@ -391,7 +391,14 @@
 					seatAllocated: 'Seat #{n}',
 					divisorsText: 'Divisors: 1, 3, 5, 7...',
 					quotientDetail: 'Quotient Detail',
-					winnerPrefix: 'Winner: '
+					winnerPrefix: 'Winner: ',
+					share: 'Share (%)',
+					passedHeader: 'Passed Threshold?',
+					hareSeatsHeader: 'Hare Seats',
+					lagueSeatsHeader: 'Sainte-Laguë Seats',
+					differenceHeader: 'Difference',
+					yes: 'Yes',
+					no: 'No'
 				},
 				id: {
 					title: 'ApportionmentCalc',
@@ -430,7 +437,14 @@
 					seatAllocated: 'Kursi ke-{n}',
 					divisorsText: 'Pembagi: 1, 3, 5, 7...',
 					quotientDetail: 'Rincian Bilangan',
-					winnerPrefix: 'Pemenang: '
+					winnerPrefix: 'Pemenang: ',
+					share: 'Persentase (%)',
+					passedHeader: 'Lolos Ambang Batas?',
+					hareSeatsHeader: 'Kursi Hare',
+					lagueSeatsHeader: 'Kursi Sainte-Laguë',
+					differenceHeader: 'Selisih',
+					yes: 'Ya',
+					no: 'Tidak'
 				}
 			};
 
@@ -721,10 +735,20 @@
 						return;
 					const {results} = this.data
 					  , total = results.reduce((sum,p)=>sum + p.votes, 0);
-					const csv = 'Party,Votes,Share (%),Passed Threshold?,Hare Seats,Sainte-Laguë Seats,Difference\n' + results.map(r=>`"${r.name.replace(/"/g, '""')}",${r.votes},"${this.format(r.votes / total * 100, {
+					const header = [
+						this.text('party'),
+						this.text('votes'),
+						this.text('share'),
+						this.text('passedHeader'),
+						this.text('hareSeatsHeader'),
+						this.text('lagueSeatsHeader'),
+						this.text('differenceHeader')
+					].join(',');
+
+					const csv = header + '\n' + results.map(r=>`"${r.name.replace(/"/g, '""')}",${r.votes},"${this.format(r.votes / total * 100, {
 						minimumFractionDigits: 2,
 						maximumFractionDigits: 2
-					})}",${r.passed ? 'Yes' : 'No'},${r.hareSeats},${r.lagueSeats},${r.lagueSeats - r.hareSeats}`).join('\n');
+					})}",${r.passed ? this.text('yes') : this.text('no')},${r.hareSeats},${r.lagueSeats},${r.lagueSeats - r.hareSeats}`).join('\n');
 					node('a', {
 						href: URL.createObjectURL(new Blob([csv],{
 							type: 'text/csv'
