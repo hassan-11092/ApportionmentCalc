@@ -276,6 +276,31 @@
 				margin-bottom: .4rem
 			}
 
+			#subtitle {
+				margin-bottom: 1.5rem;
+				opacity: .8
+			}
+
+			#addParty {
+				margin-bottom: 1rem
+			}
+
+			.common-stats {
+				margin-top: 1rem;
+				padding: 1rem;
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: 4px
+			}
+
+			.info-italic {
+				font-style: italic
+			}
+
+			.step-header {
+				margin-top: 2rem
+			}
+
 			@media(max-width: 768px) {
 				.results-grid {
 					grid-template-columns:1fr
@@ -308,7 +333,7 @@
 				</select>
 			</div>
 			<h1 id="title"></h1>
-			<p id="subtitle" style="margin-bottom:1.5rem;opacity:.8"></p>
+			<p id="subtitle"></p>
 			<div id="input">
 				<div class="row">
 					<div class="group">
@@ -321,7 +346,7 @@
 					</div>
 				</div>
 				<div class="party-list" id="partyList"></div>
-				<button id="addParty" class="secondary" style="margin-bottom:1rem"></button>
+				<button id="addParty" class="secondary"></button>
 				<button id="calculate" class="primary"></button>
 			</div>
 			<div id="results" class="hidden">
@@ -330,7 +355,7 @@
 					<button id="showSteps" class="secondary"></button>
 					<button id="export" class="success"></button>
 				</div>
-				<div id="commonStats" style="margin-top:1rem;padding:1rem;background:var(--surface);border:1px solid var(--border);border-radius:4px"></div>
+				<div id="commonStats" class="common-stats"></div>
 				<div class="results-grid">
 					<div>
 						<h2 id="hareTitle"></h2>
@@ -674,7 +699,7 @@
 
 					dom.commonStats.innerHTML = `<p class="info">${this.text('totalVotes')}: ${this.format(total)}</p><p class="info">${this.text('thresholdVotes')} (${this.format(threshold)}%): ${this.format(thresholdVotes, {
 						maximumFractionDigits: 0
-					})}</p>${failed.length ? `<p class="info" style="font-style:italic">${this.text('belowThreshold')}: ${failed.map(result=>escape(result.name)).join(', ')}</p>` : ''}`;
+					})}</p>${failed.length ? `<p class="info info-italic">${this.text('belowThreshold')}: ${failed.map(result=>escape(result.name)).join(', ')}</p>` : ''}`;
 					dom.hareResults.innerHTML = `<p class="info">${this.text('quota')}: ${this.format(quota)}</p><table><thead><tr><th>${this.text('party')}</th><th>${this.text('votes')}</th><th>${this.text('seatsColumn')}</th><th>${this.text('remainder')}</th></tr></thead><tbody>${[...passed].sort((a,b)=>b.hareSeats - a.hareSeats).map(result=>row(result, result.hareSeats, `<td>${this.format(result.remainder, {
 						maximumFractionDigits: 0
 					})}</td>`)).join('')}</tbody></table>`;
@@ -694,7 +719,7 @@
 						n: step.round
 					})}</td><td><strong>${escape(step.winner)}</strong></td><td>${this.format(step.winnerQuotient, {
 						maximumFractionDigits: 2
-					})}</td><td>${step.quotients.find(quotient=>quotient.id === step.winnerId).divisor}</td></tr>`).join('')}</tbody></table><h3 style="margin-top:2rem">${this.text('quotientDetail')}</h3>${steps.map(step=>`<div class="step"><h4>${this.template('seatAllocated', {
+					})}</td><td>${step.quotients.find(quotient=>quotient.id === step.winnerId).divisor}</td></tr>`).join('')}</tbody></table><h3 class="step-header">${this.text('quotientDetail')}</h3>${steps.map(step=>`<div class="step"><h4>${this.template('seatAllocated', {
 						n: step.round
 					})} - ${this.text('winnerPrefix')}${escape(step.winner)}</h4><table><tr>${step.quotients.map(quotient=>`<th>${escape(quotient.name)} (/${quotient.divisor})</th>`).join('')}</tr><tr>${step.quotients.map(quotient=>`<td class="${quotient.id === step.winnerId ? 'highlight' : ''}">${this.format(quotient.quotient, {
 						maximumFractionDigits: 2
