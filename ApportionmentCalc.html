@@ -579,8 +579,10 @@
 				createPartyRow(party) {
 					const el = document.createElement('div');
 					el.className = 'party-row';
-					el.innerHTML = `<input type="text" placeholder="${this.text('partyPlaceholder')}" value="${party.name}"><input type="number" placeholder="${this.text('votesPlaceholder')}" value="${party.votes || ''}" min="0"><button class="danger">×</button>`;
+					el.innerHTML = `<input type="text" placeholder="${this.text('partyPlaceholder')}"><input type="number" placeholder="${this.text('votesPlaceholder')}" min="0"><button class="danger">×</button>`;
 					const [nameInput,votesInput,deleteBtn] = el.children;
+					nameInput.value = party.name;
+					votesInput.value = party.votes || '';
 					nameInput.onchange = e=>party.name = e.target.value;
 					votesInput.onchange = e=>e.target.value = party.votes = Math.round(parseFloat(e.target.value)) || 0;
 					deleteBtn.onclick = ()=>this.removeParty(party.id);
