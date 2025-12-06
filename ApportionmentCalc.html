@@ -687,7 +687,7 @@
 						maximumFractionDigits: 0
 					})}${failed.length ? `<br><span class="info-italic">${this.text('belowThreshold')}: ${failed.map(result=>escape(result.name)).join(', ')}</span>` : ''}</div>`;
 					dom.hareResults.innerHTML = `<p class="info">${this.text('quota')}: ${this.format(quota)}</p><table><thead><tr><th>${this.text('party')}</th><th>${this.text('votes')}</th><th>${this.text('seatsColumn')}</th><th>${this.text('remainder')}</th></tr></thead><tbody>${[...passed].sort((a,b)=>b.hareSeats - a.hareSeats).map(result=>row(result, result.hareSeats, `<td>${this.format(result.remainder, {
-						maximumFractionDigits: 0
+						maximumFractionDigits: 2
 					})}</td>`)).join('')}</tbody></table>`;
 					dom.sainteLagueResults.innerHTML = `<p class="info">${this.text('divisorsText')}</p><table><thead><tr><th>${this.text('party')}</th><th>${this.text('votes')}</th><th>${this.text('seatsColumn')}</th></tr></thead><tbody>${[...passed].sort((a,b)=>b.lagueSeats - a.lagueSeats).map(result=>row(result, result.lagueSeats)).join('')}</tbody></table>`;
 					dom.comparisonResults.innerHTML = `<table><thead><tr><th>${this.text('party')}</th><th>Hare</th><th>Sainte-Laguë</th><th>${this.text('diff')}</th></tr></thead><tbody>${[...results].sort((a,b)=>b.votes - a.votes).map(result=>{
