@@ -606,11 +606,14 @@
 						return alert(this.text('belowThreshold'));
 
 					const quota = total / seats;
-					const hare = passed.map(party=>({
-						...party,
-						hareSeats: Math.floor(party.votes / quota),
-						remainder: party.votes % quota
-					}));
+					const hare = passed.map(party => {
+						const hareSeats = Math.floor((party.votes * seats) / total);
+						return {
+							...party,
+							hareSeats,
+							remainder: party.votes - hareSeats * quota
+						};
+					});
 					let allocated = hare.reduce((sum,party)=>sum + party.hareSeats, 0);
 					hare.sort((a,b)=>b.remainder - a.remainder || b.votes - a.votes);
 					for (let i = 0; i < seats - allocated; i++)
@@ -687,7 +690,6 @@
 						maximumFractionDigits: 0
 					})}${failed.length ? `<br><span class="info-italic">${this.text('belowThreshold')}: ${failed.map(result=>escape(result.name)).join(', ')}</span>` : ''}</div>`;
 					dom.hareResults.innerHTML = `<p class="info">${this.text('quota')}: ${this.format(quota)}</p><table><thead><tr><th>${this.text('party')}</th><th>${this.text('votes')}</th><th>${this.text('seatsColumn')}</th><th>${this.text('remainder')}</th></tr></thead><tbody>${[...passed].sort((a,b)=>b.hareSeats - a.hareSeats).map(result=>row(result, result.hareSeats, `<td>${this.format(result.remainder, {
-						minimumFractionDigits: 2,
 						maximumFractionDigits: 2
 					})}</td>`)).join('')}</tbody></table>`;
 					dom.sainteLagueResults.innerHTML = `<p class="info">${this.text('divisorsText')}</p><table><thead><tr><th>${this.text('party')}</th><th>${this.text('votes')}</th><th>${this.text('seatsColumn')}</th></tr></thead><tbody>${[...passed].sort((a,b)=>b.lagueSeats - a.lagueSeats).map(result=>row(result, result.lagueSeats)).join('')}</tbody></table>`;
