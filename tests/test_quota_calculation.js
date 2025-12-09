@@ -38,7 +38,7 @@ describe('ApportionmentCalc Quota Calculation Fix', function () {
 
     // Add 3 parties
     for (let i = 0; i < 3; i++) {
-        await page.click('#addParty');
+        await page.click('#add');
     }
     await page.waitForSelector('.party-row:nth-child(3)');
 
@@ -58,7 +58,7 @@ describe('ApportionmentCalc Quota Calculation Fix', function () {
     await page.waitForSelector('#results:not(.hidden)');
 
     const hareResults = await page.evaluate(() => {
-      const rows = Array.from(document.querySelectorAll('#hareResults table tbody tr'));
+      const rows = Array.from(document.querySelectorAll('#hare table tbody tr'));
       return rows.map(row => {
         const columns = row.querySelectorAll('td');
         return {

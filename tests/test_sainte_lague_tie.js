@@ -36,7 +36,7 @@ describe('ApportionmentCalc Sainte-Laguë Tie Breaking', function () {
 
     // Add new parties
     for (let i = 0; i < parties.length; i++) {
-        await page.click('#addParty');
+        await page.click('#add');
     }
     await page.waitForSelector(`.party-row:nth-child(${parties.length})`);
 
@@ -50,7 +50,7 @@ describe('ApportionmentCalc Sainte-Laguë Tie Breaking', function () {
 
   const getSainteLagueResults = async () => {
       return await page.evaluate(() => {
-        const rows = Array.from(document.querySelectorAll('#sainteLagueResults table tbody tr'));
+        const rows = Array.from(document.querySelectorAll('#sainteLague table tbody tr'));
         return rows.map(row => {
           const columns = row.querySelectorAll('td');
           return {

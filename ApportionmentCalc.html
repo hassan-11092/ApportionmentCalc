@@ -665,7 +665,7 @@
 						steps: stepList,
 						results: valid.map(party=>{
 							const hareResult = hare.find(x=>x.id === party.id);
-							const sainteLagueResult = lague.find(x=>x.id === party.id);
+							const sainteLagueResult = sainteLague.find(x=>x.id === party.id);
 							return {
 								...party,
 								passed: party.votes >= thresholdVotes - 1e-9,
