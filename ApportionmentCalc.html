@@ -344,7 +344,11 @@
 					</div>
 				</div>
 				<div class="party-list" id="partyList"></div>
-				<button id="addParty" class="secondary"></button>
+				<div class="row" style="margin-bottom: 1rem">
+					<button id="addParty" class="secondary" style="margin-bottom: 0"></button>
+					<button id="import" class="secondary" style="margin-bottom: 0"></button>
+				</div>
+				<input type="file" id="importFile" accept=".csv,.tsv,.txt" class="hidden">
 				<button id="calculate" class="primary"></button>
 			</div>
 			<div id="results" class="hidden">
@@ -423,7 +427,9 @@
 					lagueSeatsHeader: 'Sainte-Laguë Seats',
 					differenceHeader: 'Difference',
 					yes: 'Yes',
-					no: 'No'
+					no: 'No',
+					import: 'Import CSV/TSV',
+					alertImport: 'Error importing file. Please ensure it is a valid CSV/TSV with "Party" and "Votes" columns.'
 				},
 				id: {
 					title: 'ApportionmentCalc',
@@ -469,7 +475,9 @@
 					lagueSeatsHeader: 'Kursi Sainte-Laguë',
 					differenceHeader: 'Selisih',
 					yes: 'Ya',
-					no: 'Tidak'
+					no: 'Tidak',
+					import: 'Impor CSV/TSV',
+					alertImport: 'Gagal mengimpor file. Pastikan format CSV/TSV valid dengan kolom "Partai" dan "Suara".'
 				}
 			};
 
@@ -518,6 +526,8 @@
 					click('showSteps', ()=>this.toggleModal(true));
 					click('closeModal', ()=>this.toggleModal(false));
 					click('export', ()=>this.exportData());
+					click('import', ()=>dom.importFile.click());
+					dom.importFile.onchange = event=>this.importData(event.target.files[0]);
 					dom.modal.onclick = event=>event.target === dom.modal && this.toggleModal(false);
 					dom.language.onchange = event=>this.setLanguage(event.target.value);
 					dom.theme.onchange = event=>this.setTheme(event.target.value);
@@ -542,7 +552,7 @@
 					this.language = language;
 					dom.language.value = language;
 					document.documentElement.lang = language;
-					'title subtitle seatsLabel thresholdLabel addParty calculate edit showSteps export hareTitle sainteLagueTitle comparisonTitle modalTitle'.split(' ').forEach(id=>{
+					'title subtitle seatsLabel thresholdLabel addParty calculate edit showSteps export import hareTitle sainteLagueTitle comparisonTitle modalTitle'.split(' ').forEach(id=>{
 						dom[id].textContent = this.text(id);
 					}
 					);
@@ -732,6 +742,78 @@
 						})),
 						download: `apportionment_${new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-')}.csv`
 					}).click();
+				}
+
+				importData(file) {
+					if (!file) return;
+					const reader = new FileReader();
+					reader.onload = e => {
+						try {
+							const text = e.target.result;
+							const firstLine = text.split('\n')[0] || '';
+							const delimiter = (firstLine.match(/\t/g) || []).length > (firstLine.match(/,/g) || []).length ? '\t' : ',';
+							const lines = text.split(/\r?\n/).filter(line => line.trim());
+							if (lines.length < 1) throw new Error('No data');
+
+							const parseLine = (line) => line.split(new RegExp(`\\${delimiter}(?=(?:(?:[^"]*"){2})*[^"]*$)`))
+								.map(c => c.trim().replace(/^"|"$/g, '').replace(/""/g, '"'));
+
+							const firstRow = parseLine(lines[0]);
+							const strategies = [
+								(row) => {
+									const lower = row.map(c => c.toLowerCase());
+									return {
+										name: lower.findIndex(h => ['party', 'partai', 'name', 'nama'].some(k => h.includes(k))),
+										votes: lower.findIndex(h => ['vote', 'suara'].some(k => h.includes(k))),
+										start: 1
+									};
+								},
+								(row) => {
+									const numeric = row.map(c => /^\d+$/.test(c.replace(/[.,]/g, '').trim()));
+									const v = numeric.findIndex(Boolean);
+									const n = numeric.findIndex((val, i) => !val && i !== v);
+									return {
+										name: n !== -1 ? n : (row.length === 2 ? (v === 0 ? 1 : 0) : -1),
+										votes: v,
+										start: 0
+									};
+								}
+							];
+
+							const config = strategies.map(s => s(firstRow)).find(res => res.name !== -1 && res.votes !== -1)
+								|| { name: -1, votes: -1, start: 1 };
+
+							if (config.name === -1 || config.votes === -1) throw new Error('Invalid columns');
+
+							const newParties = [];
+							for (let i = config.start; i < lines.length; i++) {
+								const columns = parseLine(lines[i]);
+								if (columns.length <= Math.max(config.name, config.votes)) continue;
+
+								const name = columns[config.name]; // Already unquoted by parseLine
+								const votesStr = columns[config.votes].replace(/,/g, '').replace(/\./g, '');
+								const votes = parseInt(votesStr.replace(/[^0-9]/g, '')) || 0;
+
+								if (name) {
+									newParties.push({
+										id: this.nextId++,
+										name,
+										votes
+									});
+								}
+							}
+
+							newParties.length ? (() => {
+								this.parties = newParties;
+								this.renderParties();
+								dom.importFile.value = '';
+							})() : alert(this.text('alertImport'));
+						} catch (error) {
+							console.error(error);
+							alert(this.text('alertImport'));
+						}
+					};
+					reader.readAsText(file);
 				}
 			}
 

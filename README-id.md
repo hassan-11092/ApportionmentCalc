@@ -33,7 +33,7 @@ Kalkulator mengambil jumlah suara untuk beberapa partai politik dan total jumlah
 - **Input Partai Dinamis**: Tambah atau hapus partai sesuai kebutuhan.
 - **Rincian Mendalam**: Lihat BPP, sisa suara, bilangan pembagi, dan alokasi langkah demi langkah.
 - **Visualisasi Sainte Laguë**: Lihat tabel langkah demi langkah bagaimana setiap kursi dimenangkan.
-- **Ekspor CSV**: Unduh hasil perhitungan untuk analisis lebih lanjut di spreadsheet.
+- **Impor/Ekspor CSV**: Impor data partai dari file CSV/TSV dan unduh hasil perhitungan untuk analisis lebih lanjut.
 - **File HTML Tunggal**: Tidak perlu instalasi, tidak ada dependensi, bekerja sepenuhnya offline.
 
 ## Kasus Penggunaan

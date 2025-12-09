@@ -19,7 +19,7 @@ describe('ApportionmentCalc Remainder Decimal Places', function () {
     await browser.close();
   });
 
-  it('should display integer remainders with at least 2 decimal places', async () => {
+  it('should display integer remainders without decimals', async () => {
     const clearAndType = async (selector, value) => {
         const element = await page.$(selector);
         await element.click({ clickCount: 3 });
@@ -71,7 +71,7 @@ describe('ApportionmentCalc Remainder Decimal Places', function () {
 
     console.log('Party A Remainder Display:', partyA.remainder);
 
-    // Expectation: "5.00"
-    expect(partyA.remainder).to.equal('5.00', 'Remainder should be displayed with 2 decimal places even if integer');
+    // Expectation: "5" (integers should display without decimals according to memory/guidelines)
+    expect(partyA.remainder).to.equal('5', 'Remainder should be displayed without decimals if integer');
   });
 });
