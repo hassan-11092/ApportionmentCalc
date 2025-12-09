@@ -44,8 +44,8 @@ describe('ApportionmentCalc Bug Reproduction', function () {
     }
 
     // Add 2 parties
-    await page.click('#addParty');
-    await page.click('#addParty');
+    await page.click('#add');
+    await page.click('#add');
 
     // Party A
     await page.type('.party-row:nth-child(1) input[type="text"]', 'Party A');
@@ -60,7 +60,7 @@ describe('ApportionmentCalc Bug Reproduction', function () {
 
     // Extract results from Hare Table
     const hareResults = await page.evaluate(() => {
-      const rows = Array.from(document.querySelectorAll('#hareResults table tbody tr'));
+      const rows = Array.from(document.querySelectorAll('#hare table tbody tr'));
       return rows.map(row => {
         const columns = row.querySelectorAll('td');
         return {

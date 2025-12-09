@@ -40,7 +40,7 @@ describe('ApportionmentCalc Zero Votes Bug', function () {
     }
 
     // Add 1 party
-    await page.click('#addParty');
+    await page.click('#add');
     await page.waitForSelector('.party-row:nth-child(1)');
 
     // Party A: 0 votes

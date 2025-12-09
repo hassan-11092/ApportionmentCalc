@@ -91,7 +91,7 @@ describe('Import Robustness', function () {
       // Setup data
       await page.reload();
       // Wait for page load
-      await page.waitForSelector('#partyList');
+      await page.waitForSelector('#list');
 
       // Setup download
       const client = await page.target().createCDPSession();

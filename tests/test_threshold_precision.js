@@ -39,8 +39,8 @@ describe('ApportionmentCalc Threshold Precision', function () {
     }
 
     // Add 2 new parties
-    await page.click('#addParty');
-    await page.click('#addParty');
+    await page.click('#add');
+    await page.click('#add');
     await page.waitForSelector('.party-row:nth-child(2)');
 
     // Party A: 1100 votes (Exactly 1.1% of 100,000)
@@ -60,7 +60,7 @@ describe('ApportionmentCalc Threshold Precision', function () {
 
     // Check if Party A is present in the Hare Results table
     const hareParties = await page.evaluate(() => {
-      const rows = Array.from(document.querySelectorAll('#hareResults table tbody tr'));
+      const rows = Array.from(document.querySelectorAll('#hare table tbody tr'));
       return rows.map(row => row.querySelector('td').innerText.trim());
     });
 
