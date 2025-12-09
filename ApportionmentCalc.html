@@ -486,6 +486,7 @@
 
 			class ApportionmentCalc {
 				constructor() {
+					this.EPSILON = 1e-9;
 					this.parties = Object.entries({
 						'Apple Party': 25000,
 						'Banana Party': 15000,
@@ -601,7 +602,7 @@
 						return alert(this.text('alertParties'));
 
 					const thresholdVotes = total * threshold / 100;
-					const passed = valid.filter(party=>party.votes >= thresholdVotes);
+					const passed = valid.filter(party=>party.votes >= thresholdVotes - this.EPSILON);
 					if (!passed.length)
 						return alert(this.text('belowThreshold'));
 
@@ -666,7 +667,7 @@
 							const lagueResult = sainteLague.find(x=>x.id === party.id);
 							return {
 								...party,
-								passed: party.votes >= thresholdVotes,
+								passed: party.votes >= thresholdVotes - this.EPSILON,
 								hareSeats: hareResult?.hareSeats ?? 0,
 								lagueSeats: lagueResult?.lagueSeats ?? 0,
 								remainder: hareResult?.remainder ?? 0
