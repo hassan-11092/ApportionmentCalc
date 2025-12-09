@@ -750,9 +750,10 @@
 					reader.onload = e => {
 						try {
 							const text = e.target.result;
-							const delimiter = text.includes('\t') ? '\t' : ',';
+							const firstLine = text.split('\n')[0] || '';
+							const delimiter = (firstLine.match(/\t/g) || []).length > (firstLine.match(/,/g) || []).length ? '\t' : ',';
 							const lines = text.split(/\r?\n/).filter(line => line.trim());
-							if (lines.length < 2) throw new Error('No data');
+							if (lines.length < 1) throw new Error('No data');
 
 							// Simple CSV parser that handles quotes
 							const parseLine = (line) => {
@@ -779,14 +780,35 @@
 								return result;
 							};
 
-							const headers = parseLine(lines[0].toLowerCase());
-							const nameIndex = headers.findIndex(h => h.includes('party') || h.includes('partai') || h.includes('name') || h.includes('nama'));
-							const votesIndex = headers.findIndex(h => h.includes('vote') || h.includes('suara'));
+							const firstRow = parseLine(lines[0]);
+							const lowerFirst = firstRow.map(c => c.toLowerCase());
+
+							let nameIndex = lowerFirst.findIndex(h => ['party', 'partai', 'name', 'nama'].some(k => h.includes(k)));
+							let votesIndex = lowerFirst.findIndex(h => ['vote', 'suara'].some(k => h.includes(k)));
+							let startRow = 1;
+
+							// Fallback: Headerless detection
+							if (nameIndex === -1 || votesIndex === -1) {
+								// Check if first row looks like data (contains number)
+								const numericCols = firstRow.map(c => /^\d+$/.test(c.replace(/[.,]/g, '').trim()));
+								if (numericCols.some(isNum => isNum)) {
+									// Assume the numeric column is votes
+									votesIndex = numericCols.findIndex(isNum => isNum);
+									// Assume the first non-numeric column is name, or just the other column
+									nameIndex = numericCols.findIndex((isNum, idx) => !isNum && idx !== votesIndex);
+									if (nameIndex === -1 && firstRow.length === 2) {
+										nameIndex = votesIndex === 0 ? 1 : 0;
+									}
+									if (votesIndex !== -1 && nameIndex !== -1) {
+										startRow = 0; // Include first row
+									}
+								}
+							}
 
 							if (nameIndex === -1 || votesIndex === -1) throw new Error('Invalid columns');
 
 							const newParties = [];
-							for (let i = 1; i < lines.length; i++) {
+							for (let i = startRow; i < lines.length; i++) {
 								const columns = parseLine(lines[i]);
 								if (columns.length <= Math.max(nameIndex, votesIndex)) continue;
 
