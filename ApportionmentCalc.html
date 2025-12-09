@@ -364,8 +364,8 @@
 						<div id="hare"></div>
 					</div>
 					<div>
-						<h2 id="lagueTitle"></h2>
-						<div id="lague"></div>
+						<h2 id="sainteLagueTitle"></h2>
+						<div id="sainteLague"></div>
 					</div>
 				</div>
 				<div class="comparison">
@@ -394,12 +394,12 @@
 					add: '+ Add Party',
 					calculate: 'Calculate Allocation',
 					edit: 'Edit Inputs',
-					steps: 'Show Sainte Laguë Steps',
+					steps: 'Show Sainte-Laguë Steps',
 					export: 'Export to CSV',
 					hareTitle: 'Hare Quota Method',
-					lagueTitle: 'Sainte Laguë Method',
+					sainteLagueTitle: 'Sainte-Laguë Method',
 					compareTitle: 'Results Comparison',
-					modalTitle: 'Sainte Laguë Step-by-Step',
+					modalTitle: 'Sainte-Laguë Step-by-Step',
 					party: 'Party',
 					votes: 'Votes',
 					seatsColumn: 'Seats',
@@ -424,7 +424,7 @@
 					share: 'Share (%)',
 					passedHeader: 'Passed Threshold?',
 					hareSeatsHeader: 'Hare Seats',
-					lagueSeatsHeader: 'Sainte-Laguë Seats',
+					sainteLagueSeatsHeader: 'Sainte-Laguë Seats',
 					differenceHeader: 'Difference',
 					yes: 'Yes',
 					no: 'No',
@@ -442,12 +442,12 @@
 					add: '+ Tambah Partai',
 					calculate: 'Hitung Alokasi',
 					edit: 'Ubah Input',
-					steps: 'Tampilkan Langkah Sainte Laguë',
+					steps: 'Tampilkan Langkah Sainte-Laguë',
 					export: 'Ekspor ke CSV',
 					hareTitle: 'Metode Kuota Hare',
-					lagueTitle: 'Metode Sainte Laguë',
+					sainteLagueTitle: 'Metode Sainte-Laguë',
 					compareTitle: 'Perbandingan Hasil',
-					modalTitle: 'Langkah-langkah Sainte Laguë',
+					modalTitle: 'Langkah-langkah Sainte-Laguë',
 					party: 'Partai',
 					votes: 'Suara',
 					seatsColumn: 'Kursi',
@@ -472,7 +472,7 @@
 					share: 'Persentase (%)',
 					passedHeader: 'Lolos Ambang Batas?',
 					hareSeatsHeader: 'Kursi Hare',
-					lagueSeatsHeader: 'Kursi Sainte-Laguë',
+					sainteLagueSeatsHeader: 'Kursi Sainte-Laguë',
 					differenceHeader: 'Selisih',
 					yes: 'Ya',
 					no: 'Tidak',
@@ -547,7 +547,7 @@
 					this.language = language;
 					dom.language.value = language;
 					document.documentElement.lang = language;
-					['title', 'subtitle', 'seatsLabel', 'thresholdLabel', 'add', 'calculate', 'edit', 'steps', 'export', 'import', 'hareTitle', 'lagueTitle', 'compareTitle', 'modalTitle'].forEach(id=>dom[id].textContent = this.text(id));
+					['title', 'subtitle', 'seatsLabel', 'thresholdLabel', 'add', 'calculate', 'edit', 'steps', 'export', 'import', 'hareTitle', 'sainteLagueTitle', 'compareTitle', 'modalTitle'].forEach(id=>dom[id].textContent = this.text(id));
 					[['autoTheme', 0], ['lightTheme', 1], ['darkTheme', 2]].forEach(([key,index])=>dom.theme.options[index].textContent = this.text(key));
 					this.renderParties();
 					!dom.results.classList.contains('hidden') && this.data && this.renderResults();
@@ -621,18 +621,18 @@
 					for (let i = 0; i < seats - allocated; i++)
 						hare[i % hare.length] && hare[i % hare.length].hareSeats++;
 
-					const lague = passed.map(party=>({
+					const sainteLague = passed.map(party=>({
 						...party,
-						lagueSeats: 0
+						sainteLagueSeats: 0
 					}));
 					const stepList = [];
 					for (let i = 1; i <= seats; i++) {
 						let max = -1
 						  , winner = -1;
-						const quotients = lague.map((party,j)=>{
-							const divisor = 2 * party.lagueSeats + 1;
+						const quotients = sainteLague.map((party,j)=>{
+							const divisor = 2 * party.sainteLagueSeats + 1;
 							const quotient = party.votes / divisor;
-							if (quotient > max || (quotient === max && party.votes > lague[winner].votes)) {
+							if (quotient > max || (quotient === max && party.votes > sainteLague[winner].votes)) {
 								max = quotient;
 								winner = j;
 							}
@@ -645,11 +645,11 @@
 						}
 						);
 						if (winner !== -1) {
-							lague[winner].lagueSeats++;
+							sainteLague[winner].sainteLagueSeats++;
 							stepList.push({
 								round: i,
-								winner: lague[winner].name,
-								winnerId: lague[winner].id,
+								winner: sainteLague[winner].name,
+								winnerId: sainteLague[winner].id,
 								winnerQuotient: max,
 								quotients
 							});
@@ -665,12 +665,12 @@
 						steps: stepList,
 						results: valid.map(party=>{
 							const hareResult = hare.find(x=>x.id === party.id);
-							const lagueResult = lague.find(x=>x.id === party.id);
+							const sainteLagueResult = lague.find(x=>x.id === party.id);
 							return {
 								...party,
 								passed: party.votes >= thresholdVotes - 1e-9,
 								hareSeats: hareResult?.hareSeats ?? 0,
-								lagueSeats: lagueResult?.lagueSeats ?? 0,
+								sainteLagueSeats: sainteLagueResult?.sainteLagueSeats ?? 0,
 								remainder: hareResult?.remainder ?? 0
 							};
 						}
@@ -694,10 +694,10 @@
 					dom.hare.innerHTML = `<p class="info">${this.text('quota')}: ${this.format(quota)}</p><table><thead><tr><th>${this.text('party')}</th><th>${this.text('votes')}</th><th>${this.text('seatsColumn')}</th><th>${this.text('remainder')}</th></tr></thead><tbody>${[...passed].sort((a,b)=>b.hareSeats - a.hareSeats).map(result=>row(result, result.hareSeats, `<td>${this.format(result.remainder, {
 						maximumFractionDigits: 2
 					})}</td>`)).join('')}</tbody></table>`;
-					dom.lague.innerHTML = `<p class="info">${this.text('divisorsText')}</p><table><thead><tr><th>${this.text('party')}</th><th>${this.text('votes')}</th><th>${this.text('seatsColumn')}</th></tr></thead><tbody>${[...passed].sort((a,b)=>b.lagueSeats - a.lagueSeats).map(result=>row(result, result.lagueSeats)).join('')}</tbody></table>`;
+					dom.sainteLague.innerHTML = `<p class="info">${this.text('divisorsText')}</p><table><thead><tr><th>${this.text('party')}</th><th>${this.text('votes')}</th><th>${this.text('seatsColumn')}</th></tr></thead><tbody>${[...passed].sort((a,b)=>b.sainteLagueSeats - a.sainteLagueSeats).map(result=>row(result, result.sainteLagueSeats)).join('')}</tbody></table>`;
 					dom.compare.innerHTML = `<table><thead><tr><th>${this.text('party')}</th><th>Hare</th><th>Sainte-Laguë</th><th>${this.text('diff')}</th></tr></thead><tbody>${[...results].sort((a,b)=>b.votes - a.votes).map(result=>{
-						const diff = result.lagueSeats - result.hareSeats;
-						return `<tr><td>${escape(result.name)}${result.passed ? '' : ` ( < ${this.format(threshold)}%)`}</td><td>${result.hareSeats}</td><td>${result.lagueSeats}</td><td class="${diff > 0 ? 'positive' : diff < 0 ? 'negative' : 'neutral'}">${diff > 0 ? '+' : ''}${diff}</td></tr>`;
+						const diff = result.sainteLagueSeats - result.hareSeats;
+						return `<tr><td>${escape(result.name)}${result.passed ? '' : ` ( < ${this.format(threshold)}%)`}</td><td>${result.hareSeats}</td><td>${result.sainteLagueSeats}</td><td class="${diff > 0 ? 'positive' : diff < 0 ? 'negative' : 'neutral'}">${diff > 0 ? '+' : ''}${diff}</td></tr>`;
 					}
 					).join('')}</tbody></table>`;
 				}
@@ -722,11 +722,11 @@
 						return;
 					const {results} = this.data;
 					const total = results.reduce((sum,party)=>sum + party.votes, 0);
-					const header = [this.text('party'), this.text('votes'), this.text('share'), this.text('passedHeader'), this.text('hareSeatsHeader'), this.text('lagueSeatsHeader'), this.text('differenceHeader')].join(',');
+					const header = [this.text('party'), this.text('votes'), this.text('share'), this.text('passedHeader'), this.text('hareSeatsHeader'), this.text('sainteLagueSeatsHeader'), this.text('differenceHeader')].join(',');
 					const csv = header + '\n' + results.map(result=>`"${result.name.replace(/"/g, '""')}",${result.votes},"${this.format(result.votes / total * 100, {
 						minimumFractionDigits: 2,
 						maximumFractionDigits: 2
-					})}",${result.passed ? this.text('yes') : this.text('no')},${result.hareSeats},${result.lagueSeats},${result.lagueSeats - result.hareSeats}`).join('\n');
+					})}",${result.passed ? this.text('yes') : this.text('no')},${result.hareSeats},${result.sainteLagueSeats},${result.sainteLagueSeats - result.hareSeats}`).join('\n');
 					node('a', {
 						href: URL.createObjectURL(new Blob([csv],{
 							type: 'text/csv'
