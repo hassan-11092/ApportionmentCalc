@@ -602,7 +602,7 @@
 						return alert(this.text('alertParties'));
 
 					const thresholdVotes = total * threshold / 100;
-					const passed = valid.filter(party=>party.votes >= thresholdVotes - 1e-9);
+					const passed = valid.filter(party=>party.votes >= thresholdVotes - 1e-7);
 					if (!passed.length)
 						return alert(this.text('belowThreshold'));
 
@@ -668,7 +668,7 @@
 							const sainteLagueResult = sainteLague.find(x=>x.id === party.id);
 							return {
 								...party,
-								passed: party.votes >= thresholdVotes - 1e-9,
+								passed: party.votes >= thresholdVotes - 1e-7,
 								hareSeats: hareResult?.hareSeats ?? 0,
 								sainteLagueSeats: sainteLagueResult?.sainteLagueSeats ?? 0,
 								remainder: hareResult?.remainder ?? 0
