@@ -71,15 +71,17 @@ describe('ApportionmentCalc Quota Calculation Fix', function () {
     const partyB = hareResults.find(p => p.party === 'Party B');
     const partyC = hareResults.find(p => p.party === 'Party C');
 
-    // Current buggy behavior (Quota based on passed votes 227/2 = 113.5):
-    // B: 171/113.5 = 1 seat, Rem 57.5
-    // C: 56/113.5 = 0 seats, Rem 56
-    // B gets extra seat. Total B=2, C=0.
+    // Scenario details:
+    // Total Valid Votes (A+B+C) = 20 + 171 + 56 = 247.
+    // Seats = 2.
+    // Quota (based on total valid votes) = 247 / 2 = 123.5.
 
-    // Correct behavior (Quota based on total valid votes 247/2 = 123.5):
-    // B: 171/123.5 = 1 seat, Rem 47.5
-    // C: 56/123.5 = 0 seats, Rem 56
-    // C gets extra seat. Total B=1, C=1.
+    // Allocation:
+    // Party B: 171 / 123.5 = 1.38 -> 1 seat. Remainder = 171 - 123.5 = 47.5.
+    // Party C: 56 / 123.5 = 0.45 -> 0 seats. Remainder = 56.
+
+    // Remaining seat goes to Party C (56 > 47.5).
+    // Final: B=1, C=1.
 
     console.log('Party B seats:', partyB.seats);
     console.log('Party C seats:', partyC.seats);
