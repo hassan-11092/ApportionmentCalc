@@ -420,6 +420,7 @@
 					seatAllocated: 'Seat #{n}',
 					divisorsText: 'Divisors: 1, 3, 5, 7...',
 					quotientDetail: 'Quotient Detail',
+					detailsLimited: 'Showing details for the first {n} rounds only.',
 					winnerPrefix: 'Winner: ',
 					share: 'Share (%)',
 					passedHeader: 'Passed Threshold?',
@@ -468,6 +469,7 @@
 					seatAllocated: 'Kursi ke-{n}',
 					divisorsText: 'Pembagi: 1, 3, 5, 7...',
 					quotientDetail: 'Rincian Bilangan',
+					detailsLimited: 'Menampilkan rincian untuk {n} putaran pertama saja.',
 					winnerPrefix: 'Pemenang: ',
 					share: 'Persentase (%)',
 					passedHeader: 'Lolos Ambang Batas?',
@@ -706,15 +708,18 @@
 					const {steps} = this.data;
 					if (!steps?.length)
 						return;
+					const limit = 50;
+					const showDetails = steps.slice(0, limit);
+					const warning = steps.length > limit ? `<p class="info" style="margin-top:1rem;font-style:italic">${this.template('detailsLimited', {n: limit})}</p>` : '';
 					dom.modalSteps.innerHTML = `<table><thead><tr><th>${this.string('round')}</th><th>${this.string('winner')}</th><th>${this.string('quotient')}</th><th>${this.string('divisor')}</th></tr></thead><tbody>${steps.map(step=>`<tr><td>${this.template('seatAllocated', {
 						n: step.round
 					})}</td><td><strong>${escape(step.winner)}</strong></td><td>${this.format(step.winnerQuotient, {
 						maximumFractionDigits: 2
-					})}</td><td>${step.quotients.find(quotient=>quotient.id === step.winnerId).divisor}</td></tr>`).join('')}</tbody></table><h3 class="step-header">${this.string('quotientDetail')}</h3>${steps.map(step=>`<div class="step"><h4>${this.template('seatAllocated', {
+					})}</td><td>${step.quotients.find(quotient=>quotient.id === step.winnerId).divisor}</td></tr>`).join('')}</tbody></table><h3 class="step-header">${this.string('quotientDetail')}</h3>${warning}${showDetails.map(step=>`<div class="step"><h4>${this.template('seatAllocated', {
 						n: step.round
 					})} - ${this.string('winnerPrefix')}${escape(step.winner)}</h4><table><tr>${step.quotients.map(quotient=>`<th>${escape(quotient.name)} (/${quotient.divisor})</th>`).join('')}</tr><tr>${step.quotients.map(quotient=>`<td class="${quotient.id === step.winnerId ? 'highlight' : ''}">${this.format(quotient.quotient, {
 						maximumFractionDigits: 2
-					})}</td>`).join('')}</tr></table></div>`).join('')}`;
+					})}</td>`).join('')}</tr></table></div>`).join('')}${warning}`;
 				}
 
 				exportData() {
